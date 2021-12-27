@@ -1,0 +1,29 @@
+{
+    "name": "project_wetube",
+    "version": "1.0.0",
+    "description": "Node JS, Express, MongoDB and ES6",
+    "main": "src/init.js",
+    "scripts": {
+        "dev": "nodemon --exec babel-node src/init.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/99yuseong/Wetube.git"
+    },
+    "author": "99yuseong",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/99yuseong/Wetube/issues"
+    },
+    "homepage": "https://github.com/99yuseong/Wetube#readme",
+    "dependencies": {
+        "express": "^4.17.2",
+        "pug": "^3.0.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.16.5",
+        "@babel/node": "^7.16.5",
+        "@babel/preset-env": "^7.16.5",
+        "nodemon": "^2.0.15"
+    }
+}
