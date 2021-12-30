@@ -4,7 +4,7 @@
     "description": "Node JS, Express, MongoDB and ES6",
     "main": "src/init.js",
     "scripts": {
-        "dev": "nodemon --exec babel-node src/init.js"
+        "dev": "nodemon --exec --legacy-watch babel-node src/init.js"
     },
     "repository": {
         "type": "git",
@@ -17,7 +17,14 @@
     },
     "homepage": "https://github.com/99yuseong/Wetube#readme",
     "dependencies": {
+        "bcrypt": "^5.0.1",
+        "connect-mongo": "^4.6.0",
+        "dotenv": "^10.0.0",
         "express": "^4.17.2",
+        "express-session": "^1.17.2",
+        "mongoose": "^6.1.4",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.4",
         "pug": "^3.0.2"
     },
     "devDependencies": {

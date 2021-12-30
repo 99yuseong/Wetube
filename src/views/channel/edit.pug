@@ -1,0 +1,15 @@
+extends ../base/layout
+
+block content
+    form(method="post", enctype="multipart/form-data")
+        label(for="name") Channel's name  
+        input(type="text", placeholder="Channel name", name="name", id="name", value=`${channel.name}`)
+        img(src=`/${channel.avatarUrl}`, alt="current Avatar")
+        label(for="avatar") Change Avatar
+        input(type="file", name="avatar", accept="image/*" ,id="avatar") 
+        label(for="description") Description
+        textarea(placeholder="About your channel..." name="description", cols="30", rows="10", id="description")=channel.description
+        input(type="submit", value="Save")
+    hr
+    a(href="changepassword") Change Password &rarr;
+    a(href="deleteChannel") Delete Channel &rarr;

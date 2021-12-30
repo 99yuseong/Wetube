@@ -4,8 +4,8 @@ import { showSubscriptions } from "../controllers/channelController";
 
 const feed = express.Router();
 
-feed.route("/feed/explore").get(explore);
-feed.route("/feed/subscription").get(showSubscriptions);
-feed.route("/feed/library").get(showLibrary);
+feed.route("/explore").get(explore);
+feed.route("/subscription").get(showSubscriptions);
+feed.route("/library").get(showLibrary);
 
 export default feed;

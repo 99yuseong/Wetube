@@ -1,0 +1,10 @@
+extends ../base/layout
+
+block content
+    form(method="POST")
+        input(type="email", placeholder="Email", name="email")
+        input(type="password", placeholder="Password", name="password")
+        input(type="submit", value="Login")
+
+    hr
+    a(href="/join") Don't have an Account? &rarr; Join

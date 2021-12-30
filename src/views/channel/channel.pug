@@ -1,0 +1,28 @@
+extends ../base/layout
+include ../base/mixins/video
+
+block content 
+    div
+        img(src=`/${channel.avatarUrl}`, alt=`${channel.name}'s avatar`)
+        header
+            h1 #{channel.name}
+            small #{channel.subscribed} #{channel.subscribed < 2 ? "subscriber" : "suscribers"}
+        button(type="button") Subscribe
+
+    hr
+    a(href=`${channel._id}/edit`) Edit Channel &rarr; 
+    hr
+    ul
+        li home
+            br
+            if(channel.videos)
+                +video(channel.videos)
+            else
+                span Nothing found.
+        
+        li infomation
+            br
+            if(channel.description)
+                p=channel.description
+            else
+                span No description

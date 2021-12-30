@@ -1,1 +1,24 @@
-span header
+div
+    button
+        i.fas.fa-bars
+    a(href="/")
+        i.fab.fa-youtube
+           strong Wetube
+           sup KR
+div
+    input(type="text", placeholder="Serach")
+    button(type="submit")
+        i.fas.fa-search
+div
+    if loggedIn
+        a(href=`/channel/${channel._id}/upload`)
+            i.fas.fa-upload
+        a(href=`/channel/${channel._id}/logout`)
+            Strong Logout
+        a(href=`/channel/${channel._id}`)
+            img(src=`/${channel.avatarUrl}`, alt=`${channel.name}'s Channel`)
+    else
+        a(href="/login")
+            strong Login
+        a(href="/join")
+            strong Join

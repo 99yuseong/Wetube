@@ -1,0 +1,31 @@
+include ../mixins/channel
+nav
+    div
+        button
+            i.fas.fa-bars
+        a(href="/")
+            i.fab.fa-youtube
+                strong Wetube
+                sup KR
+
+    ul
+        li
+            a(href="/") 
+                i.fas.fa-home
+                span 홈
+        li
+            a(href="/feed/explore") 
+                i.fas.fa-compass
+                span 탐색
+        li
+            a(href="/feed/subscriptions") 
+                i.fas.fa-tags
+                span 구독
+        li
+            a(href="/feed/library")
+                i.fas.fa-photo-video
+                span 보관함
+
+    //- +subscription(구독 배열)
+
+

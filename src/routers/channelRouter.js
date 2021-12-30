@@ -1,18 +1,24 @@
 import express from "express";
+import { avatarUpload, videoUpload } from "../middleware";
 import { upload } from "../controllers/videoController";
 import {
     showChannel,
     edit,
     remove,
     logout,
+    changePassword,
 } from "../controllers/channelController";
 
 const channel = express.Router();
 
-channel.route("/channel/:id").get(showChannel);
-channel.route("/channel/:id/edit").get(edit).post(edit);
-channel.route("/channel/:id/delete").get(remove);
-channel.route("/channel/:id/logout").get(logout);
-channel.route("/channel/:id/upload").get(upload).post(upload);
+channel.route("/:id").get(showChannel);
+channel.route("/:id/edit").get(edit).post(avatarUpload.single("avatar"), edit);
+channel.route("/:id/changePassword").get(changePassword).post(changePassword);
+channel.route("/:id/deleteChannel").get(remove).post(remove);
+channel.route("/:id/logout").get(logout);
+channel
+    .route("/:id/upload")
+    .get(upload)
+    .post(videoUpload.single("video"), upload);
 
 export default channel;

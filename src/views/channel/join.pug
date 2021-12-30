@@ -1,0 +1,16 @@
+extends ../base/layout
+
+block content
+    form(method="post", enctype="multipart/form-data")
+        input(type="email", placeholder="Email", name="email")
+        input(type="password", placeholder="Password", name="password")
+        input(type="password", placeholder="Password Confirmation", name="password2") 
+        input(type="text", placeholder="Channel name", name="name")
+        label(for="avatar") Avatar
+        input(type="file", name="avatar", accept="image/*" ,id="avatar") 
+        label(for="description") Description
+        textarea(placeholder="About your channel..." name="description", cols="30", rows="10", id="description")  
+        input(type="submit", value="Join")
+    
+    hr
+    a(href="/join") Already have an Account? &rarr; Login
