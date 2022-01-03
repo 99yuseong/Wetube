@@ -1,0 +1,18 @@
+extends ../base/layout
+
+block content
+    video(src=`/${channel.tempReupload
+                    ? channel.tempReupload
+                    : video.videoUrl}`, controls)
+    a(href="reupload") Re-upload Video file
+    form(method="POST", enctype="multipart/form-data")
+        img(src=`/${video.thumbUrl}`, alt=`${video.title}'s thumbnail`)
+        label(for="thumbnail") Thumbnail File
+        input(type="file", name="thumbnail", accept="image/*", id="thumbnail")
+        label(for="title") Title
+        input(type="text", placeholder="Video Title", name="title", id="title", value=`${video.title}` )
+        label(for="description") Description 
+        input(type="text", placeholder="About your video...", name="description", id="description", value=`${video.description}`)
+        label(for="hashtag") Hashtags, seperated by comma
+        input(type="text", placeholder="#more #than #three #hashtags", name="hashtag", id="hashtag", value=`${video.hashtag}`)
+        input(type="submit", value="Save")

@@ -107,7 +107,7 @@ export const remove = async (req, res) => {
         params: { id },
         session: { channel },
     } = req;
-    if (!channel.videos.includes(id)) {
+    if (!channel.videos.includes(video._id.valueOf())) {
         return res.status(400).redirect(`/watch/${id}`);
     }
     await Video.findByIdAndDelete(id);

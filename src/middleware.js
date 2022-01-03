@@ -6,6 +6,39 @@ export const localMiddleware = (req, res, next) => {
     next();
 };
 
+export const channelOwnerMiddleware = (req, res, next) => {
+    const {
+        params: { id },
+        session: { channel },
+    } = req;
+    if (channel._id.valueOf() !== id) {
+        console.log("Not Authorized");
+        return res.status(400).redirect(`/channel/${id}`);
+    }
+    next();
+};
+
+export const videoOwnerMiddleware = (req, res, next) => {
+    const {
+        params: { id },
+        session: { channel },
+    } = req;
+
+    let videoOwner = false;
+    channel.videos.forEach((video_obj_Id) => {
+        if (video_obj_Id.valueOf() === id) {
+            videoOwner = true;
+        }
+    });
+
+    if (videoOwner) {
+        console.log("you are video owner");
+        return next();
+    }
+    console.log("not video onwer");
+    return res.status(400).redirect(`/watch/${id}`);
+};
+
 export const protectMiddlware = (req, res, next) => {
     if (req.session.loggedIn) {
         return next();
