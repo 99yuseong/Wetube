@@ -1,0 +1,15 @@
+extends ../base/layout
+
+block content
+    form(method="POST", enctype="multipart/form-data")
+        label(for="video") Video File
+        input(type="file", name="video", accept="video/*", id="video", required)
+        label(for="thumbnail") Thumbnail File
+        input(type="file", name="thumbnail", accept="image/*", id="thumbnail", required)
+        label(for="title") Title
+        input(type="text", placeholder="Video Title", name="title", id="title", required)
+        label(for="description") Description 
+        input(type="text", placeholder="About your video...", name="description", id="description")
+        label(for="hashtag") Hashtags, seperated by comma
+        input(type="text", placeholder="#more #than #three #hashtags", name="hashtag", id="hashtag")
+        input(type="submit", value="Upload Video")

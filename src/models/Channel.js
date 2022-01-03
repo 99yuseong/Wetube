@@ -8,7 +8,7 @@ const channelSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
     avatarUrl: {
         type: String,
-        default: "uploads/avatar/Default Avatar.png-1640837098248",
+        default: "uploads/avatar/Default Avatar.png",
     },
     description: { type: String },
     subscribed: { type: Number, default: 0 },

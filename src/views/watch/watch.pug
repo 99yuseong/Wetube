@@ -1,0 +1,41 @@
+extends ../base/layout
+
+block content
+    div
+        video(src=`/${video.videoUrl}`, controls)
+    section
+        header
+            small #{video.hashtag}
+            h1 #{video.title}
+        div
+            small #{video.meta.views} #{video.meta.views < 2 ? "view" : "views"}
+            span ㆍ
+            small #{video.meta.createdAt}
+        ul
+            li
+                button
+                    i.far.fa-thumbs-up
+                    strong #{video.meta.liked} 
+                    //- i.fas.fa-thumbs-up 누르면
+            li
+                button
+                    i.far.fa-thumbs-down
+                    strong #{video.meta.disliked}
+                    //- i.fas.fa-thumbs-down 누르면
+            li
+                button 
+                    i.fas.fa-archive
+                    strong  save
+    section
+        div
+            a(href=`/channel/${video.channel._id}`)
+                img(src=`/${video.channel.avatarUrl}`, alt=`${video.channel.name}의 avatar image`)
+            header
+                h2 #{video.channel.name}
+                small #{video.channel.subscribed} #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
+            button(type="button")  subscription
+        p #{video.description}
+    hr
+    a(href=`/watch/${video._id}/edit`) Edit Video &rarr;
+    hr
+    //- comments

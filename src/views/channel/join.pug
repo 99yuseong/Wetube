@@ -2,10 +2,10 @@ extends ../base/layout
 
 block content
     form(method="post", enctype="multipart/form-data")
-        input(type="email", placeholder="Email", name="email")
-        input(type="password", placeholder="Password", name="password")
-        input(type="password", placeholder="Password Confirmation", name="password2") 
-        input(type="text", placeholder="Channel name", name="name")
+        input(type="email", placeholder="Email", name="email", required)
+        input(type="password", placeholder="Password", name="password", required)
+        input(type="password", placeholder="Password Confirmation", name="password2", required ) 
+        input(type="text", placeholder="Channel name", name="name", required)
         label(for="avatar") Avatar
         input(type="file", name="avatar", accept="image/*" ,id="avatar") 
         label(for="description") Description

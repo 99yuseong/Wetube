@@ -4,7 +4,7 @@
     "description": "Node JS, Express, MongoDB and ES6",
     "main": "src/init.js",
     "scripts": {
-        "dev": "nodemon --exec --legacy-watch babel-node src/init.js"
+        "dev": "nodemon --exec babel-node src/init.js"
     },
     "repository": {
         "type": "git",

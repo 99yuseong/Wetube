@@ -6,24 +6,49 @@ export const localMiddleware = (req, res, next) => {
     next();
 };
 
-export const protectMiddlware = (req, res, next) => {};
+export const protectMiddlware = (req, res, next) => {
+    if (req.session.loggedIn) {
+        return next();
+    }
+    console.log("Please Login");
+    return res.redirect("/login");
+};
 
-const storage = multer.diskStorage({
+export const publicOnlyMiddelware = (req, res, next) => {
+    if (!req.session.loggedIn) {
+        return next();
+    }
+    console.log("Not authorized");
+    return res.redirect("/");
+};
+
+const avatarStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/avatars");
+    },
+    filename: (req, file, cb) => {
+        cb(null, "/" + file.originalname + "-" + Date.now());
+    },
+});
+
+const videoStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "uploads");
     },
     filename: (req, file, cb) => {
-        cb(
-            null,
-            "/" + file.fieldname + "/" + file.originalname + "-" + Date.now()
-        );
+        if (file.fieldname === "video") {
+            cb(null, `/videos/${file.originalname} - ${Date.now()}`);
+        }
+        if (file.fieldname === "thumbnail") {
+            cb(null, `/thumbnails/${file.originalname} - ${Date.now()}`);
+        }
     },
 });
 
 export const avatarUpload = multer({
-    storage,
+    storage: avatarStorage,
 });
 
 export const videoUpload = multer({
-    storage,
+    storage: videoStorage,
 });

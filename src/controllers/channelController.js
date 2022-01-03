@@ -29,9 +29,7 @@ export const join = async (req, res) => {
             email,
             password: await Channel.pwHash(password),
             name,
-            avatarUrl: file
-                ? file.path
-                : "uploads/avatar/Default Avatar.png-1640837098248",
+            avatarUrl: file ? file.path : "uploads/avatars/Default Avatar.png",
             description,
         });
         return res.status(201).redirect("/login");
@@ -83,6 +81,7 @@ export const edit = async (req, res) => {
             body: { name, description },
             file,
         } = req;
+        console.log(name, description, file);
 
         const nameExists = await Channel.findOne({ name });
         if (nameExists && id !== nameExists._id.valueOf()) {
@@ -90,11 +89,15 @@ export const edit = async (req, res) => {
             return res.status(400).redirect("edit");
         }
 
-        const editedChannel = await Channel.findByIdAndUpdate(id, {
-            name,
-            description,
-            avatarUrl: file ? file.path : channel.avatarUrl,
-        });
+        const editedChannel = await Channel.findByIdAndUpdate(
+            id,
+            {
+                name,
+                description,
+                avatarUrl: file ? file.path : channel.avatarUrl,
+            },
+            { new: true }
+        );
 
         req.session.channel = editedChannel;
 
@@ -145,7 +148,7 @@ export const showChannel = async (req, res) => {
     const {
         params: { id },
     } = req;
-    const channel = await Channel.findById(id);
+    const channel = await Channel.findById(id).populate("videos");
     return res.status(200).render("channel/channel", { channel });
 };
 

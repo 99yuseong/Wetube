@@ -1,7 +1,13 @@
 mixin video(videos)
-    each video in videos
-        video(src=`/${videos.videoUrl}`)
-        Strong #{video.title}
-        small #{video.channel.name}
-        small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
-        small #{video.meta.createdAt}
+    ul
+        each video in videos
+            li
+                a(href=`/watch/${video._id}`)
+                    div
+                        img(src=`/${video.thumbUrl}`)
+                        Strong #{video.title}
+                    small #{video.channel.name}
+                    br
+                    small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
+                    span ㆍ
+                    small #{video.meta.createdAt}
