@@ -1,12 +1,13 @@
 import express from "express";
 import session from "express-session";
 import morgan from "morgan";
+import MongoStore from "connect-mongo";
+import flash from "express-flash";
 
 import rootRouter from "./routers/rootRouter";
 import channelRouter from "./routers/channelRouter";
 import watchRouter from "./routers/watchRouter";
 import feedRouter from "./routers/feedRouter";
-import MongoStore from "connect-mongo";
 import { localMiddleware } from "./middleware";
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(
     })
 );
 app.use("/uploads", express.static("uploads"));
+app.use(flash());
 app.use(logger);
 app.use(localMiddleware);
 

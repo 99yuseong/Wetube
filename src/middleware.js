@@ -12,7 +12,7 @@ export const channelOwnerMiddleware = (req, res, next) => {
         session: { channel },
     } = req;
     if (channel._id.valueOf() !== id) {
-        console.log("Not Authorized");
+        req.flash("error", "Not Authorized");
         return res.status(400).redirect(`/channel/${id}`);
     }
     next();
@@ -32,10 +32,9 @@ export const videoOwnerMiddleware = (req, res, next) => {
     });
 
     if (videoOwner) {
-        console.log("you are video owner");
         return next();
     }
-    console.log("not video onwer");
+    req.flash("error", "Not Authorized");
     return res.status(400).redirect(`/watch/${id}`);
 };
 
@@ -43,7 +42,7 @@ export const protectMiddlware = (req, res, next) => {
     if (req.session.loggedIn) {
         return next();
     }
-    console.log("Please Login");
+    req.flash("error", "Please Login");
     return res.redirect("/login");
 };
 
@@ -51,7 +50,7 @@ export const publicOnlyMiddelware = (req, res, next) => {
     if (!req.session.loggedIn) {
         return next();
     }
-    console.log("Not authorized");
+    req.flash("error", "Not Authorized");
     return res.redirect("/");
 };
 

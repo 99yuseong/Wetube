@@ -35,7 +35,9 @@ block content
                 small #{video.channel.subscribed} #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
             button(type="button")  subscription
         p #{video.description}
-    hr
-    a(href=`/watch/${video._id}/edit`) Edit Video &rarr;
-    hr
+    
+    if channel && channel._id === video.channel._id.valueOf()
+        hr
+        a(href=`/watch/${video._id}/edit`) Edit Video &rarr;
+        hr
     //- comments

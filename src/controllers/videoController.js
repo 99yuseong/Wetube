@@ -1,3 +1,4 @@
+import fs, { readFile } from "fs";
 import Video from "../models/Video";
 import Channel from "../models/Channel";
 
@@ -10,12 +11,7 @@ export const upload = async (req, res) => {
         params: { id },
         session: { channel },
     } = req;
-
     if (req.method === "GET") {
-        if (id !== channel._id.valueOf()) {
-            console.log("Not channel Owner");
-            return res.status(404).redirect("/");
-        }
         return res.status(200).render("channel/upload");
     }
     if (req.method === "POST") {
@@ -38,6 +34,7 @@ export const upload = async (req, res) => {
         uploadChannel.save();
         // session
         req.session.channel.videos.push(video._id);
+        req.flash("success", "Video Successfully Uploaded");
         return res.status(201).redirect(`/watch/${video._id}`);
     }
 };
@@ -50,9 +47,6 @@ export const edit = async (req, res) => {
     const video = await Video.findById(id);
 
     if (req.method === "GET") {
-        if (!channel.videos.includes(video._id.valueOf())) {
-            return res.status(400).redirect(`/watch/${id}`);
-        }
         return res.status(200).render("watch/edit", { video });
     }
 
@@ -78,8 +72,18 @@ export const edit = async (req, res) => {
             }
         );
 
+        if (file) {
+            fs.rm(`${video.thumbUrl}`, (err) => {
+                console.log("thumbUrl_file_Edit : " + err);
+            });
+        }
+        if (channel.tempReupload) {
+            fs.rm(`${video.videoUrl}`, (err) => {
+                console.log("videoUrl_file_Edit : " + err);
+            });
+        }
         req.session.channel.tempReupload = "";
-        console.log("saved");
+        req.flash("success", "Successfully Saved");
         return res.status(200).redirect(`/watch/${id}/edit`);
     }
 };
@@ -90,9 +94,6 @@ export const reuploadVideo = async (req, res) => {
     } = req;
     const video = await Video.findById(id);
     if (req.method === "GET") {
-        if (!channel.videos.includes(video._id.valueOf())) {
-            return res.status(400).redirect(`/watch/${id}`);
-        }
         return res.status(200).render("watch/reupload", { video });
     }
     if (req.method === "POST") {
@@ -107,10 +108,21 @@ export const remove = async (req, res) => {
         params: { id },
         session: { channel },
     } = req;
-    if (!channel.videos.includes(video._id.valueOf())) {
-        return res.status(400).redirect(`/watch/${id}`);
-    }
-    await Video.findByIdAndDelete(id);
+
+    const deletedVideo = await Video.findByIdAndDelete(id);
+
+    const videoChannel = await Channel.findById(channel._id);
+    const index = videoChannel.videos.indexOf(deletedVideo._id);
+    videoChannel.videos.splice(index, 1);
+    videoChannel.save();
+
+    fs.rm(`${deletedVideo.videoUrl}`, (err) => {
+        console.log("videoUrl_file_delete : " + err);
+    });
+    fs.rm(`${deletedVideo.thumbUrl}`, (err) => {
+        console.log("thumbUrl_file_delete : " + err);
+    });
+    req.flash("success", "Permanently Deleted");
     return res.status(200).redirect("/");
 };
 
@@ -125,6 +137,7 @@ export const watchVideo = async (req, res) => {
     if (!video) {
         return res.status(404).render("base/404");
     }
+    console.log(video);
     return res.status(200).render("watch/watch", { video });
 };
 
