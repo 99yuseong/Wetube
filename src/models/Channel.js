@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 const channelSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: { type: String },
+    password: { type: String, default: false },
     socialOnly: { type: Boolean },
     name: { type: String, required: true, unique: true },
     avatarUrl: {

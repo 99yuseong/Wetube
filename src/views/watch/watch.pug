@@ -1,5 +1,5 @@
 extends ../base/layout
-
+include ../base/mixins/avatar
 block content
     div
         video(src=`/${video.videoUrl}`, controls)
@@ -28,8 +28,7 @@ block content
                     strong  save
     section
         div
-            a(href=`/channel/${video.channel._id}`)
-                img(src=`/${video.channel.avatarUrl}`, alt=`${video.channel.name}의 avatar image`)
+            +avatar(video.channel)
             header
                 h2 #{video.channel.name}
                 small #{video.channel.subscribed} #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }

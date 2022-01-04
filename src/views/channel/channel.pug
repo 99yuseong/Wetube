@@ -3,7 +3,7 @@ include ../base/mixins/video
 
 block content 
     div
-        img(src=`/${showingChannel.avatarUrl}`, alt=`${showingChannel.name}'s avatar`)
+        img(src=`${channel.avatarUrl.startsWith("https") ? channel.avatarUrl : `/${channel.avatarUrl}`}`, alt=`${channel.name}의 avatar image`)
         header
             h1 #{showingChannel.name}
             small #{showingChannel.subscribed} #{showingChannel.subscribed < 2 ? "subscriber" : "suscribers"}

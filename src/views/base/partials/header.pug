@@ -1,3 +1,4 @@
+include ../mixins/avatar
 div
     button
         i.fas.fa-bars
@@ -15,8 +16,7 @@ div
             i.fas.fa-upload
         a(href=`/channel/${channel._id}/logout`)
             Strong Logout
-        a(href=`/channel/${channel._id}`)
-            img(src=`/${channel.avatarUrl}`, alt=`${channel.name}'s Channel`)
+        +avatar(channel)
     else
         a(href="/login")
             strong Login

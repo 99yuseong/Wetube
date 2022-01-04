@@ -1,7 +1,0 @@
-mixin subscription(subscriptions)
-    ul
-        each channel in subscription
-            li
-                a(href=`/channel/${channel.id}`)
-                    img(src=channel.avatarUrl, alt=`${channel.name}의 avatar image`)
-                    strong #{channel.name}

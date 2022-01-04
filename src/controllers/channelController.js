@@ -1,4 +1,5 @@
 import fs from "fs";
+import fetch from "node-fetch";
 import Video from "../models/Video";
 import Channel from "../models/Channel";
 
@@ -13,17 +14,27 @@ export const join = async (req, res) => {
             file,
         } = req;
 
-        const emailNameCheck = await Channel.exists({
-            $or: [{ email }, { name }],
+        const emailCheck = await Channel.findOne({
+            email,
         });
-        if (emailNameCheck) {
-            req.flash("error", "Email or Channel name is already taken");
-            return res.status(404).render("base/404");
+        console.log(emailCheck, emailCheck.socialOnly);
+        if (emailCheck && emailCheck.socialOnly === true) {
+            req.flash("error", "You already joined with Github");
+            return res.status(400).redirect("/login");
+        }
+        if (emailCheck) {
+            req.flash("error", "Email is already taken");
+            return res.status(400).redirect("/join");
+        }
+        const nameCheck = await Channel.exists({ name });
+        if (nameCheck) {
+            req.flash("error", "Channel name is already taken");
+            return res.status(400).redirect("/join");
         }
 
         if (password !== password2) {
             req.flash("error", "Password confirmation error");
-            return res.status(404).render("base/404");
+            return res.status(400).redirect("/join");
         }
 
         await Channel.create({
@@ -35,6 +46,74 @@ export const join = async (req, res) => {
         });
         req.flash("success", "Successfully Joined! Please login");
         return res.status(201).redirect("/login");
+    }
+};
+
+export const joinGithub = (req, res) => {
+    const baseUrl = "https://github.com/login/oauth/authorize";
+    const config = {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        scope: "read:user user:email",
+        allow_signup: true,
+    };
+    const params = new URLSearchParams(config).toString();
+    const totalUrl = `${baseUrl}?${params}`;
+    return res.redirect(totalUrl);
+};
+
+export const joinCompleteGithub = async (req, res) => {
+    const baseUrl = "https://github.com/login/oauth/access_token";
+    const config = {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code: req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+    const totalUrl = `${baseUrl}?${params}`;
+
+    const tokenRequest = await (
+        await fetch(totalUrl, {
+            method: "POST",
+            headers: { Accept: "application/json" },
+        })
+    ).json();
+
+    if ("access_token" in tokenRequest) {
+        const { access_token } = tokenRequest;
+        const apiUrl = "https://api.github.com";
+        const userData = await (
+            await fetch(`${apiUrl}/user`, {
+                headers: { Authorization: `token ${access_token}` },
+            })
+        ).json();
+        const emailData = await (
+            await fetch(`${apiUrl}/user/emails`, {
+                headers: { Authorization: `token ${access_token}` },
+            })
+        ).json();
+
+        const emailObj = emailData.find(
+            (element) => element.primary === true && element.verified === true
+        );
+        if (!emailObj) {
+            req.flash("error", "Can not Login with Github");
+            return res.status(400).redirect("/login");
+        }
+        let channel = await Channel.findOne({ email: emailObj.email });
+        if (!channel) {
+            channel = await Channel.create({
+                email: emailObj.email,
+                socialOnly: true,
+                name: userData.name,
+                avatarUrl: userData.avatar_url,
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.channel = channel;
+        return res.status(200).redirect("/");
+    } else {
+        req.flash("error", "Can not Login with Github");
+        return res.status(404).redirect("/");
     }
 };
 

@@ -1,10 +1,11 @@
 extends ../base/layout
+include ../base/mixins/avatar
 
 block content
     form(method="post", enctype="multipart/form-data")
         label(for="name") Channel's name  
         input(type="text", placeholder="Channel name", name="name", id="name", value=`${channel.name}`)
-        img(src=`/${channel.avatarUrl}`, alt="current Avatar")
+        img(src=`${channel.avatarUrl.startsWith("https") ? channel.avatarUrl : `/${channel.avatarUrl}`}`, alt=`${channel.name}의 avatar image`)
         label(for="avatar") Change Avatar
         input(type="file", name="avatar", accept="image/*" ,id="avatar") 
         label(for="description") Description
