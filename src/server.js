@@ -7,6 +7,7 @@ import flash from "express-flash";
 import rootRouter from "./routers/rootRouter";
 import channelRouter from "./routers/channelRouter";
 import watchRouter from "./routers/watchRouter";
+import socialRouter from "./routers/socialRouter";
 import feedRouter from "./routers/feedRouter";
 import { localMiddleware } from "./middleware";
 
@@ -35,6 +36,7 @@ app.use(localMiddleware);
 app.use("/", rootRouter);
 app.use("/channel", channelRouter);
 app.use("/watch", watchRouter);
+app.use("/socialLogin", socialRouter);
 app.use("/feed", feedRouter);
 
 export default app;

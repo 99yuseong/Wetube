@@ -7,9 +7,10 @@ div
            strong Wetube
            sup KR
 div
-    input(type="text", placeholder="Serach")
-    button(type="submit")
-        i.fas.fa-search
+    form(method="GET", action="/search")
+        input(type="text", name="keyword", placeholder="Search")
+        button(type="submit")
+            i.fas.fa-search
 div
     if loggedIn
         a(href=`/channel/${channel._id}/upload`)

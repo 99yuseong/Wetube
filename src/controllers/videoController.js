@@ -1,4 +1,4 @@
-import fs, { readFile } from "fs";
+import fs from "fs";
 import Video from "../models/Video";
 import Channel from "../models/Channel";
 
@@ -9,7 +9,6 @@ export const home = async (req, res) => {
 export const upload = async (req, res) => {
     const {
         params: { id },
-        session: { channel },
     } = req;
     if (req.method === "GET") {
         return res.status(200).render("channel/upload");
@@ -126,8 +125,6 @@ export const remove = async (req, res) => {
     return res.status(200).redirect("/");
 };
 
-export const search = (req, res) => {};
-
 export const watchVideo = async (req, res) => {
     const {
         params: { id },
@@ -139,6 +136,16 @@ export const watchVideo = async (req, res) => {
     }
     console.log(video);
     return res.status(200).render("watch/watch", { video });
+};
+
+export const search = async (req, res) => {
+    const {
+        query: { keyword },
+    } = req;
+    const searchedVideo = await Video.find({
+        title: { $regex: new RegExp(`${keyword}`, "i") },
+    });
+    return res.render("watch/home", { videos: searchedVideo });
 };
 
 export const explore = (req, res) => {};

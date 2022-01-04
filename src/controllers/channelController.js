@@ -17,15 +17,25 @@ export const join = async (req, res) => {
         const emailCheck = await Channel.findOne({
             email,
         });
-        console.log(emailCheck, emailCheck.socialOnly);
-        if (emailCheck && emailCheck.socialOnly === true) {
-            req.flash("error", "You already joined with Github");
-            return res.status(400).redirect("/login");
-        }
         if (emailCheck) {
+            if (
+                emailCheck.socialOnly === true &&
+                emailCheck.socialLogin === "Github"
+            ) {
+                req.flash("error", "You already joined with Github");
+                return res.status(400).redirect("/login");
+            }
+            if (
+                emailCheck.socialOnly === true &&
+                emailCheck.socialLogin === "Naver"
+            ) {
+                req.flash("error", "You already joined with Naver");
+                return res.status(400).redirect("/login");
+            }
             req.flash("error", "Email is already taken");
             return res.status(400).redirect("/join");
         }
+
         const nameCheck = await Channel.exists({ name });
         if (nameCheck) {
             req.flash("error", "Channel name is already taken");
@@ -49,7 +59,7 @@ export const join = async (req, res) => {
     }
 };
 
-export const joinGithub = (req, res) => {
+export const loginGithub = (req, res) => {
     const baseUrl = "https://github.com/login/oauth/authorize";
     const config = {
         client_id: process.env.GITHUB_CLIENT_ID,
@@ -61,7 +71,7 @@ export const joinGithub = (req, res) => {
     return res.redirect(totalUrl);
 };
 
-export const joinCompleteGithub = async (req, res) => {
+export const loginCompleteGithub = async (req, res) => {
     const baseUrl = "https://github.com/login/oauth/access_token";
     const config = {
         client_id: process.env.GITHUB_CLIENT_ID,
@@ -104,6 +114,7 @@ export const joinCompleteGithub = async (req, res) => {
             channel = await Channel.create({
                 email: emailObj.email,
                 socialOnly: true,
+                socialLogin: "Github",
                 name: userData.name,
                 avatarUrl: userData.avatar_url,
             });
@@ -113,6 +124,65 @@ export const joinCompleteGithub = async (req, res) => {
         return res.status(200).redirect("/");
     } else {
         req.flash("error", "Can not Login with Github");
+        return res.status(404).redirect("/");
+    }
+};
+
+export const loginNaver = (req, res) => {
+    const baseUrl = "https://nid.naver.com/oauth2.0/authorize";
+    const config = {
+        response_type: "code",
+        client_id: process.env.NAVER_CLIENT_ID,
+        redirect_uri: "http://localhost:3000/socialLogin/naver/complete",
+        state: process.env.NAVER_STATE,
+    };
+    const params = new URLSearchParams(config).toString();
+    const totalUrl = `${baseUrl}?${params}`;
+    return res.redirect(totalUrl);
+};
+export const loginCompleteNaver = async (req, res) => {
+    const baseUrl = "https://nid.naver.com/oauth2.0/token";
+    const config = {
+        grant_type: "authorization_code",
+        client_id: process.env.NAVER_CLIENT_ID,
+        client_secret: process.env.NAVER_CLIENT_SECRET,
+        code: req.query.code,
+        state: req.query.state,
+    };
+    const params = new URLSearchParams(config).toString();
+    const totalUrl = `${baseUrl}?${params}`;
+
+    const tokenRequest = await (
+        await fetch(totalUrl, {
+            method: "POST",
+        })
+    ).json();
+    console.log(tokenRequest);
+
+    if ("access_token" in tokenRequest) {
+        const { access_token, token_type } = tokenRequest;
+        const apiUrl = "https://openapi.naver.com/v1/nid/me";
+
+        const { response } = await (
+            await fetch(apiUrl, {
+                headers: { Authorization: `${token_type} ${access_token}` },
+            })
+        ).json();
+        let channel = await Channel.findOne({ email: response.email });
+        if (!channel) {
+            channel = await Channel.create({
+                email: response.email,
+                socialOnly: true,
+                socialLogin: "naver",
+                name: response.name,
+                avatarUrl: response.profile_image,
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.channel = channel;
+        return res.status(200).redirect("/");
+    } else {
+        req.flash("error", "Can not Login with Naver");
         return res.status(404).redirect("/");
     }
 };

@@ -5,6 +5,7 @@ const channelSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, default: false },
     socialOnly: { type: Boolean },
+    socialLogin: { type: String },
     name: { type: String, required: true, unique: true },
     avatarUrl: {
         type: String,
