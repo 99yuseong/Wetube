@@ -148,6 +148,24 @@ export const search = async (req, res) => {
     return res.render("watch/home", { videos: searchedVideo });
 };
 
-export const explore = (req, res) => {};
+export const explore = (req, res) => {
+    let videos = [];
+    // subscription array > name find
+    // const subscriptions = await Channel.find({ name });
 
-export const showLibrary = (req, res) => {};
+    return res.status(200).render("feed/explore", { videos });
+};
+
+export const showLibrary = (req, res) => {
+    const {
+        session: {
+            channel: { library },
+        },
+    } = req;
+
+    let videos = [];
+    // library array > name find
+    // const library = await Channel.find({ name });
+
+    return res.status(200).render("feed/library", { videos });
+};

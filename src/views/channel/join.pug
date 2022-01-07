@@ -1,15 +1,47 @@
 extends ../base/layout
 
 block content
-    form(method="post", enctype="multipart/form-data")
-        input(type="email", placeholder="Email", name="email", required)
-        input(type="password", placeholder="Password", name="password", required)
-        input(type="password", placeholder="Password Confirmation", name="password2", required ) 
-        input(type="text", placeholder="Channel name", name="name", required)
-        label(for="avatar") Avatar
-        input(type="file", name="avatar", accept="image/*" ,id="avatar") 
-        label(for="description") Description
-        textarea(placeholder="About your channel..." name="description", cols="30", rows="10", id="description")  
-        input(type="submit", value="Join")
-    hr
+    seciton.join
+        header
+            h1
+                span
+                    i.fab.fa-youtube
+                    strong Wetube
+                    sup KR
+                strong Join Form
+        div.form-container
+            form(method="post", enctype="multipart/form-data").join-form
+                div.join-content
+                    div.join-email
+                        h2
+                            label(for="email") Email
+                        input(type="email", name="email", id="email", required).input-email
+                        span.email-msg
+                    div.join-password
+                        h2
+                            label(for="password") Password
+                        input(type="password", name="password", id="password", required).input-password
+                        span.password-msg
+                        h2
+                            label(for="password2") Password Confirmation
+                        input(type="password", name="password2", id="password2" required ).input-password2 
+                        span.password-confirm-msg
+                    div.join-name
+                        h2
+                            label(for="name") Channel-name
+                        input(type="text", name="name", id="name", required).input-channel-name
+                        span.name-msg
+                    div.join-avatar
+                        h2
+                            label(for="avatar") Avatar
+                        input(type="file", name="avatar", accept="image/*", id="avatar").input-avatar 
+                        img(src="/uploads/avatars/Default Avatar.png").avatar
+                    div.join-description
+                        h2
+                            label(for="description") Description
+                        textarea( name="description", cols="30", rows="10", id="description")  
+                input(type="submit", value="Join").join-btn
+        hr
     a(href="/join") Already have an Account? &rarr; Login
+block scripts
+    script(src="/assets/js/channelCheck.js") 

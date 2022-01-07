@@ -6,7 +6,7 @@ import { protectMiddlware } from "../middleware";
 const feed = express.Router();
 
 feed.route("/explore").get(explore);
-feed.route("/subscription").all(protectMiddlware).get(showSubscriptions);
+feed.route("/subscriptions").all(protectMiddlware).get(showSubscriptions);
 feed.route("/library").all(protectMiddlware).get(showLibrary);
 
 export default feed;
