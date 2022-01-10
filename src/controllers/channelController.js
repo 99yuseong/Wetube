@@ -266,7 +266,7 @@ export const edit = async (req, res) => {
 
         req.session.channel = editedChannel;
         if (
-            file.path &&
+            file &&
             channel.avatarUrl !== 'uploads/avatars/Default Avatar.png'
         ) {
             fs.rm(`${channel.avatarUrl}`, (err) => {
@@ -281,7 +281,7 @@ export const edit = async (req, res) => {
 export const editCheck = async (req, res) => {
     const {
         body,
-        params: { section, id },
+        params: { id },
     } = req;
 
     const nameExist = await Channel.findOne({ name: body.name });

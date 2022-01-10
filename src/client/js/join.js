@@ -11,22 +11,17 @@ const password2Msg = joinForm.querySelector('.password-confirm-msg');
 const avatar = joinForm.querySelector('.avatar');
 const joinBtn = joinForm.querySelector('.join-btn');
 
-const validObj = {
-    email: { valid: 'invalid', msg: emailMsg },
-    name: { valid: 'invalid', msg: nameMsg },
-    password: { valid: 'invalid', msg: passwordMsg },
-    password2: { valid: 'invalid', msg: password2Msg },
-};
-
 const emailCheck = async (event) => {
     // email valid check
     const emailFormat = new RegExp(
         '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-.]+\\.[a-zA-Z]{2,6}$'
     );
+    console.log();
     const formatOk = emailFormat.test(inputEmail.value);
     if (!formatOk) {
-        emailMsg.innerText = inputEmail.value === '' ? '' : 'Email is invalid';
-        validObj.email.valid = 'invalid';
+        emailMsg.innerText =
+            inputEmail.value === '' ? 'Required' : 'Email is invalid';
+        event.target.classList.add('invalid');
         return;
     }
     // registered email check
@@ -41,14 +36,14 @@ const emailCheck = async (event) => {
     ).json();
     if (check.email === 'taken') {
         emailMsg.innerText = 'Already taken';
-        validObj.email.valid = 'invalid';
+        event.target.classList.add('invalid');
     } else if (check.email === 'valid') {
         emailMsg.innerText = 'Valid Email';
-        validObj.email.valid = 'valid';
+        event.target.classList.remove('invalid');
     }
 };
 
-const nameCheck = async () => {
+const nameCheck = async (event) => {
     const check = await (
         await fetch('/join/name', {
             method: 'POST',
@@ -60,14 +55,15 @@ const nameCheck = async () => {
     ).json();
     if (check.name === 'taken') {
         nameMsg.innerText = 'Already taken';
-        validObj.name.valid = 'invalid';
+        event.target.classList.add('invalid');
     } else {
-        nameMsg.innerText = inputName.value === '' ? '' : 'Valid Channel name';
-        validObj.name.valid = 'valid';
+        nameMsg.innerText =
+            inputName.value === '' ? 'Required' : 'Valid Channel name';
+        event.target.classList.remove('invalid');
     }
 };
 
-const pwCheck = () => {
+const pwCheck = (event) => {
     const passwordFormat = new RegExp(
         '(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}'
     );
@@ -76,22 +72,22 @@ const pwCheck = () => {
             inputPw.value === ''
                 ? 'Required'
                 : 'more than 8 characters, and one or more [Letters, Numbers, and (!)(@)(#)($)(%)(&)(*)(?)]';
-        validObj.password.valid = 'invalid';
+        event.target.classList.add('invalid');
     } else {
         passwordMsg.innerText = 'password ok';
-        validObj.password.valid = 'valid';
+        event.target.classList.remove('invalid');
     }
 };
 
-const pwConfirm = () => {
+const pwConfirm = (event) => {
     if (inputPw.value !== inputPw2.value) {
         password2Msg.innerText =
-            inputPw.value === '' ? '' : 'Password confirmation Error';
-        validObj.password2.valid = 'invalid';
+            inputPw.value === '' ? 'Required' : 'Password confirmation Error';
+        inputPw2.classList.add('invalid');
     } else {
         password2Msg.innerText =
-            inputPw.value === '' ? '' : 'password confirmation ok';
-        validObj.password2.valid = 'valid';
+            inputPw.value === '' ? 'Required' : 'password confirmation ok';
+        inputPw2.classList.remove('invalid');
     }
 };
 
@@ -105,17 +101,17 @@ const showAvatar = () => {
 
 const validCheck = (event) => {
     event.preventDefault();
-    let count = 4;
-    for (section in validObj) {
-        if (validObj[section].valid === 'invalid') {
-            validObj[section].msg.innerText = 'required';
-        } else {
-            count -= 1;
+    const required = joinForm.querySelectorAll('.invalid');
+    required.forEach((element) => {
+        if (element.classList.contains('invalid') && element.value === '') {
+            element.nextSibling.innerText = 'required';
         }
+    });
+    if (required) {
+        required[0].previousSibling.scrollIntoView();
+        return;
     }
-    if (count === 0) {
-        joinForm.submit();
-    }
+    return joinForm.submit();
 };
 
 inputEmail.addEventListener('input', emailCheck);

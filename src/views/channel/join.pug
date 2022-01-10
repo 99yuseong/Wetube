@@ -4,10 +4,6 @@ block content
     seciton.join
         header
             h1
-                span
-                    i.fab.fa-youtube
-                    strong Wetube
-                    sup KR
                 strong Join Form
         div.form-container
             form(method="post", enctype="multipart/form-data").join-form
@@ -15,21 +11,21 @@ block content
                     div.join-email
                         h2
                             label(for="email") Email
-                        input(type="email", name="email", id="email", required).input-email
+                        input(type="email", name="email", id="email", required).input-email.invalid
                         span.email-msg
                     div.join-password
                         h2
                             label(for="password") Password
-                        input(type="password", name="password", id="password", required).input-password
+                        input(type="password", name="password", id="password", required).input-password.invalid
                         span.password-msg
                         h2
                             label(for="password2") Password Confirmation
-                        input(type="password", name="password2", id="password2" required ).input-password2 
+                        input(type="password", name="password2", id="password2" required ).input-password2.invalid
                         span.password-confirm-msg
                     div.join-name
                         h2
                             label(for="name") Channel-name
-                        input(type="text", name="name", id="name", required).input-channel-name
+                        input(type="text", name="name", id="name", required).input-channel-name.invalid
                         span.name-msg
                     div.join-avatar
                         h2
@@ -46,4 +42,4 @@ block content
         strong Already have an Account? &rarr; 
         a(href="/login") Login
 block scripts
-    script(src="/statics/js/join.js") 
+    script(src="/assets/statics/js/join.js") 

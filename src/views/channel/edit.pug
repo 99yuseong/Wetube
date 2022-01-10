@@ -5,10 +5,6 @@ block content
     seciton.edit-channel
         header
             h1
-                span
-                    i.fab.fa-youtube
-                    strong Wetube
-                    sup KR
                 strong Edit Form
         div.edit-container
             form(method="post", enctype="multipart/form-data").edit-channel-form
@@ -27,7 +23,7 @@ block content
                         h2
                             label(for="description") Description
                         textarea(placeholder="About your channel..." name="description", cols="30", rows="10", id="description")=channel.description
-                    input(type="submit", value="Save")
+                    input(type="submit", value="Save").edit-btn
         hr
         div.edit-change-password
             a(href="changepassword") 
@@ -36,4 +32,4 @@ block content
             a(href="deleteChannel") 
                 strong Delete Channel &rarr;
 block scripts
-    script(src="/statics/js/editChannel.js") 
+    script(src="/assets/statics/js/editChannel.js") 
