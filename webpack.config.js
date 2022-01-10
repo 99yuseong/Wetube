@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         filename: 'js/[name].js',
-        path: path.resolve(__dirname, 'statics'),
+        path: path.resolve(__dirname, 'assets/statics'),
         clean: true,
     },
     mode: 'development',
@@ -32,7 +32,11 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { url: false } },
+                    { loader: 'sass-loader' },
+                ],
             },
         ],
     },

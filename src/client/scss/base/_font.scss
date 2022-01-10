@@ -1,11 +1,10 @@
 @font-face {
     font-family: 'youtube';
-    src: url('/assets/files/fonts/youtube.eot');
-    src: url('/assets/files/fonts/youtube.eot#iefix')
-            format('embedded-opentype'),
-        url('/assets/files/fonts/youtube.ttf') format('truetype'),
-        url('/assets/files/fonts/youtube.woff') format('woff'),
-        url('/assets/files/fonts/youtube.svg#youtube') format('svg');
+    src: url('/assets/fonts/youtube.eot');
+    src: url('/assets/fonts/youtube.eot#iefix') format('embedded-opentype'),
+        url('/assets/fonts/youtube.ttf') format('truetype'),
+        url('/assets/fonts/youtube.woff') format('woff'),
+        url('/assets/fonts/youtube.svg#youtube') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -25,6 +24,10 @@ i {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.ic-disliked:before {
+    content: '\e91e';
+    color: #fff;
+}
 .ic-arrow-bottom:before {
     content: '\e900';
     color: #fff;

@@ -1,20 +1,19 @@
 include ../mixins/avatar
 div
     button
-        i.fas.fa-bars
+        i.ic-hamburger
     a(href="/")
-        i.fab.fa-youtube
-           strong Wetube
-           sup KR
+        img(src="/assets/icons/Youtube-Logo.svg", alt="Button to go home")
+          
 div
     form(method="GET", action="/search")
         input(type="text", name="keyword", placeholder="Search")
         button(type="submit")
-            i.fas.fa-search
+            i.ic-search
 div
     if loggedIn
         a(href=`/channel/${channel._id}/upload`)
-            i.fas.fa-upload
+            i.ic-create
         a(href=`/channel/${channel._id}/logout`)
             Strong Logout
         +avatar(channel)
