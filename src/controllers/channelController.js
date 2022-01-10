@@ -278,6 +278,19 @@ export const edit = async (req, res) => {
     }
 };
 
+export const editCheck = async (req, res) => {
+    const {
+        body,
+        params: { section, id },
+    } = req;
+
+    const nameExist = await Channel.findOne({ name: body.name });
+    if (nameExist && nameExist._id.valueOf() !== id) {
+        return res.json({ name: 'taken' });
+    }
+    return res.json({ name: 'valid' });
+};
+
 export const changePassword = async (req, res) => {
     const {
         params: { id },

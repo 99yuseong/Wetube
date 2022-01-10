@@ -30,6 +30,7 @@ app.use(
     })
 );
 app.use('/uploads', express.static('uploads'));
+app.use('/statics', express.static('statics'));
 app.use('/assets', express.static('assets'));
 app.use(flash());
 app.use(logger);

@@ -4,11 +4,12 @@ const path = require('path');
 module.exports = {
     entry: {
         main: './src/client/js/main.js',
-        channelCheck: './src/client/js/channelCheck.js',
+        join: './src/client/js/join.js',
+        editChannel: './src/client/js/editChannel.js',
     },
     output: {
         filename: 'js/[name].js',
-        path: path.resolve(__dirname, 'assets'),
+        path: path.resolve(__dirname, 'statics'),
         clean: true,
     },
     mode: 'development',

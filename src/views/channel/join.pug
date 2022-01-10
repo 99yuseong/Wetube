@@ -41,7 +41,9 @@ block content
                             label(for="description") Description
                         textarea( name="description", cols="30", rows="10", id="description")  
                 input(type="submit", value="Join").join-btn
-        hr
-    a(href="/join") Already have an Account? &rarr; Login
+    hr
+    div
+        strong Already have an Account? &rarr; 
+        a(href="/login") Login
 block scripts
-    script(src="/assets/js/channelCheck.js") 
+    script(src="/statics/js/join.js") 
