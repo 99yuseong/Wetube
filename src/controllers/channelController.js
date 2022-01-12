@@ -369,8 +369,8 @@ export const remove = async (req, res) => {
             });
         });
 
-        req.session.destroy();
         req.flash('success', 'Your Channel is permanently deleted');
+        req.session.destroy();
         return res.redirect('/');
     }
 };
