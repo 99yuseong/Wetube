@@ -4,8 +4,9 @@ const path = require('path');
 module.exports = {
     entry: {
         main: './src/client/js/main.js',
-        join: './src/client/js/join.js',
-        editChannel: './src/client/js/editChannel.js',
+        channel_join: './src/client/js/channel/join.js',
+        channel_edit: './src/client/js/channel/edit.js',
+        watch_watch: './src/client/js/watch/watch.js',
     },
     output: {
         filename: 'js/[name].js',
@@ -14,6 +15,7 @@ module.exports = {
     },
     mode: 'development',
     watch: true,
+    devtool: 'source-map',
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'css/style.css',
@@ -34,8 +36,11 @@ module.exports = {
                 test: /\.scss$/,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    { loader: 'css-loader', options: { url: false } },
-                    { loader: 'sass-loader' },
+                    {
+                        loader: 'css-loader',
+                        options: { url: false, sourceMap: true },
+                    },
+                    { loader: 'sass-loader', options: { sourceMap: true } },
                 ],
             },
         ],

@@ -1,19 +1,21 @@
-import fs from "fs";
-import Video from "../models/Video";
-import Channel from "../models/Channel";
+import fs from 'fs';
+import Video from '../models/Video';
+import Channel from '../models/Channel';
+import res from 'express/lib/response';
 
 export const home = async (req, res) => {
-    const videos = await Video.find().populate("channel");
-    return res.render("watch/home", { videos });
+    const videos = await Video.find().populate('channel');
+    return res.render('watch/home', { videos });
 };
+
 export const upload = async (req, res) => {
     const {
         params: { id },
     } = req;
-    if (req.method === "GET") {
-        return res.status(200).render("channel/upload");
+    if (req.method === 'GET') {
+        return res.status(200).render('channel/upload');
     }
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
         const {
             body: { title, description, hashtag },
             files,
@@ -33,7 +35,7 @@ export const upload = async (req, res) => {
         uploadChannel.save();
         // session
         req.session.channel.videos.push(video._id);
-        req.flash("success", "Video Successfully Uploaded");
+        req.flash('success', 'Video Successfully Uploaded');
         return res.status(201).redirect(`/watch/${video._id}`);
     }
 };
@@ -45,11 +47,11 @@ export const edit = async (req, res) => {
     } = req;
     const video = await Video.findById(id);
 
-    if (req.method === "GET") {
-        return res.status(200).render("watch/edit", { video });
+    if (req.method === 'GET') {
+        return res.status(200).render('watch/edit', { video });
     }
 
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
         const {
             body: { title, description, hashtag },
             file,
@@ -73,16 +75,16 @@ export const edit = async (req, res) => {
 
         if (file) {
             fs.rm(`${video.thumbUrl}`, (err) => {
-                console.log("thumbUrl_file_Edit : " + err);
+                console.log('thumbUrl_file_Edit : ' + err);
             });
         }
         if (channel.tempReupload) {
             fs.rm(`${video.videoUrl}`, (err) => {
-                console.log("videoUrl_file_Edit : " + err);
+                console.log('videoUrl_file_Edit : ' + err);
             });
         }
-        req.session.channel.tempReupload = "";
-        req.flash("success", "Successfully Saved");
+        req.session.channel.tempReupload = '';
+        req.flash('success', 'Successfully Saved');
         return res.status(200).redirect(`/watch/${id}/edit`);
     }
 };
@@ -92,10 +94,10 @@ export const reuploadVideo = async (req, res) => {
         session: { channel },
     } = req;
     const video = await Video.findById(id);
-    if (req.method === "GET") {
-        return res.status(200).render("watch/reupload", { video });
+    if (req.method === 'GET') {
+        return res.status(200).render('watch/reupload', { video });
     }
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
         const { file } = req;
         channel.tempReupload = file.path;
         return res.status(201).redirect(`/watch/${id}/edit`);
@@ -116,26 +118,26 @@ export const remove = async (req, res) => {
     videoChannel.save();
 
     fs.rm(`${deletedVideo.videoUrl}`, (err) => {
-        console.log("videoUrl_file_delete : " + err);
+        console.log('videoUrl_file_delete : ' + err);
     });
     fs.rm(`${deletedVideo.thumbUrl}`, (err) => {
-        console.log("thumbUrl_file_delete : " + err);
+        console.log('thumbUrl_file_delete : ' + err);
     });
-    req.flash("success", "Permanently Deleted");
-    return res.status(200).redirect("/");
+    req.flash('success', 'Permanently Deleted');
+    return res.status(200).redirect('/');
 };
 
 export const watchVideo = async (req, res) => {
     const {
         params: { id },
+        session: { channel },
     } = req;
 
-    const video = await Video.findById(id).populate("channel");
+    const video = await Video.findById(id).populate('channel');
     if (!video) {
-        return res.status(404).render("base/404");
+        return res.status(404).render('base/404');
     }
-    console.log(video);
-    return res.status(200).render("watch/watch", { video });
+    return res.status(200).render('watch/watch', { video });
 };
 
 export const search = async (req, res) => {
@@ -143,9 +145,9 @@ export const search = async (req, res) => {
         query: { keyword },
     } = req;
     const searchedVideo = await Video.find({
-        title: { $regex: new RegExp(`${keyword}`, "i") },
+        title: { $regex: new RegExp(`${keyword}`, 'i') },
     });
-    return res.render("watch/home", { videos: searchedVideo });
+    return res.render('watch/home', { videos: searchedVideo });
 };
 
 export const explore = (req, res) => {
@@ -153,7 +155,7 @@ export const explore = (req, res) => {
     // subscription array > name find
     // const subscriptions = await Channel.find({ name });
 
-    return res.status(200).render("feed/explore", { videos });
+    return res.status(200).render('feed/explore', { videos });
 };
 
 export const showLibrary = (req, res) => {
@@ -167,5 +169,99 @@ export const showLibrary = (req, res) => {
     // library array > name find
     // const library = await Channel.find({ name });
 
-    return res.status(200).render("feed/library", { videos });
+    return res.status(200).render('feed/library', { videos });
+};
+
+const saveClickedBtn = async (btn, user, video, session) => {
+    // find user's saved Array
+    const saveArray = user[`${btn}`];
+    // check whether user saved this video
+    const saved = saveArray.indexOf(video._id);
+    let savedBoolean;
+    if (saved === -1) {
+        // if not saved, push to array
+        saveArray.push(video._id);
+        video.meta[btn] += 1;
+        savedBoolean = true;
+    } else {
+        // already saved, remove from array
+        saveArray.splice(saved, 1);
+        video.meta[btn] -= 1;
+        savedBoolean = false;
+    }
+    // update session data and server data
+    await video.save();
+    session.channel = await user.save();
+    return savedBoolean;
+};
+
+export const watchApi = async (req, res) => {
+    const {
+        params: { id, section },
+        session: {
+            channel: { _id },
+        },
+    } = req;
+
+    const user = await Channel.findById(_id);
+    const video = await Video.findById(id);
+
+    if (section === 'views') {
+        video.meta.views += 1;
+        video.save();
+        return res.sendStatus(200);
+    }
+
+    if (section === 'liked') {
+        const saved = await saveClickedBtn(section, user, video, req.session);
+        return res.json({ saved });
+    }
+
+    if (section === 'disliked') {
+        const saved = await saveClickedBtn(section, user, video, req.session);
+        return res.json({ saved });
+    }
+
+    if (section === 'library') {
+        const saved = user.library.indexOf(video._id);
+        // retrun Boolean
+        let savedBoolean;
+        if (saved === -1) {
+            // if not saved, push to array
+            user.library.push(video._id);
+            savedBoolean = true;
+        } else {
+            // if already saved, remove from array
+            user.library.splice(saved, 1);
+            savedBoolean = false;
+        }
+        req.session.channel = await user.save();
+        return res.json({ saved: savedBoolean });
+    }
+
+    if (section === 'subscription') {
+        console.log('subscription');
+        const videoChannel = await Channel.findById(video.channel);
+        console.log(videoChannel);
+        const saved = user.subscription.indexOf(video.channel);
+
+        // retrun Boolean
+        let savedBoolean;
+        if (saved === -1) {
+            // if not saved, push to array
+            user.subscription.push(video.channel);
+            videoChannel.subscribed += 1;
+            savedBoolean = true;
+        } else {
+            // if already saved, remove from array
+            user.subscription.splice(saved, 1);
+            videoChannel.subscribed -= 1;
+            savedBoolean = false;
+        }
+
+        await video.save();
+        await videoChannel.save();
+        req.session.channel = await user.save();
+        return res.json({ saved: savedBoolean });
+    }
 };

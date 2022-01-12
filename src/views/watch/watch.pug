@@ -1,43 +1,59 @@
 extends ../base/layout
 include ../base/mixins/avatar
 block content
-    div
-        video(src=`/${video.videoUrl}`, controls)
-    section
-        header
-            small #{video.hashtag}
-            h1 #{video.title}
-        div
-            small #{video.meta.views} #{video.meta.views < 2 ? "view" : "views"}
-            span ㆍ
-            small #{video.meta.createdAt}
-        ul
-            li
-                button
-                    i.ic-liked
-                    i.ic-liked-fill
-                    strong #{video.meta.liked} 
-                    //- i.fas.fa-thumbs-up 누르면
-            li
-                button
-                    i.ic-disliked
-                    strong #{video.meta.disliked}
-                    //- i.fas.fa-thumbs-down 누르면
-            li
-                button 
-                    i.ic-save
-                    strong  save
-    section
-        div
-            +avatar(video.channel)
+    article.watch
+        section.watch-video
+            div.watch-video-player
+                video(src=`/${video.videoUrl}`, controls)
+            header.watch-video-data
+                div.watch-title
+                    small #{video.hashtag}
+                    h1 #{video.title}
+                div
+                    div.watch-meta-data
+                        small.views #{video.meta.views} 
+                        small #{video.meta.views < 2 ? "view" : "views"}
+                        span ㆍ
+                        small #{video.meta.createdAt}
+                    div.watch-meta-button
+                        ul
+                            li
+                                button.liked-button
+                                    if channel.liked.includes(video._id.valueOf())
+                                        i.ic-liked-fill
+                                        strong #{video.meta.liked} 
+                                    else
+                                        i.ic-liked
+                                        strong #{video.meta.liked === 0 ? 'like' : video.meta.liked}
+                            li
+                                button.disliked-button
+                                    if channel.disliked.includes(video._id.valueOf())
+                                        i.ic-disliked-fill 
+                                        strong #{video.meta.disliked} 
+                                    else
+                                        i.ic-disliked
+                                        strong #{video.meta.disliked === 0 ? 'dislike' : video.meta.disliked}
+                            li
+                                button.save-button
+                                    i.ic-save
+                                    strong #{channel.library.includes(video._id.valueOf()) ? 'Unsave' : 'save'}
+        section.watch-channel
             header
-                h2 #{video.channel.name}
-                small #{video.channel.subscribed} #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
-            button(type="button")  subscription
-        p #{video.description}
-    
-    if channel && channel._id === video.channel._id.valueOf()
-        hr
-        a(href=`/watch/${video._id}/edit`) Edit Video &rarr;
-        hr
-    //- comments
+                div.channel-avatar
+                    +avatar(video.channel)
+                div.channel-title
+                    h2 #{video.channel.name}
+                    small.subscribers #{video.channel.subscribed}
+                    small  #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
+                div.channel-subscription
+                    if channel && channel._id === video.channel._id.valueOf()
+                        button(type="button") 
+                            a(href=`/watch/${video._id}/edit`) Edit Video
+                    else
+                        button(type="button").subscribe-button #{channel.subscription.includes(video.channel._id.valueOf()) ? 'Unsubscribe' : 'Subscribe'}
+            div.channel-video-description
+                p #{video.description}
+
+        //- comments
+block scripts
+    script(src="/assets/statics/js/watch_watch.js")
