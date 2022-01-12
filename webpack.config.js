@@ -1,12 +1,15 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
+const url = './src/client/js';
+
 module.exports = {
     entry: {
-        main: './src/client/js/main.js',
-        channel_join: './src/client/js/channel/join.js',
-        channel_edit: './src/client/js/channel/edit.js',
-        watch_watch: './src/client/js/watch/watch.js',
+        main: `${url}/main.js`,
+        channel_join: `${url}/channel/join.js`,
+        channel_edit: `${url}/channel/edit.js`,
+        watch_watch: `${url}/watch/watch.js`,
+        watch_edit: `${url}/watch/edit.js`,
     },
     output: {
         filename: 'js/[name].js',
@@ -29,6 +32,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env'],
+                        sourceMap: false,
                     },
                 },
             },
