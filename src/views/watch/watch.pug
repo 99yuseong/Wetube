@@ -1,5 +1,6 @@
 extends ../base/layout
 include ../base/mixins/avatar
+include ../base/mixins/subscriptions
 block content
     article.watch
         section.watch-video
@@ -50,10 +51,10 @@ block content
                         button(type="button") 
                             a(href=`/watch/${video._id}/edit`) Edit Video
                     else
-                        button(type="button").subscribe-button #{channel.subscription.includes(video.channel._id.valueOf()) ? 'Unsubscribe' : 'Subscribe'}
+                        +subscribedButton(video.channel)
             div.channel-video-description
                 p #{video.description}
 
         //- comments
 block scripts
-    script(src="/assets/statics/js/watch_watch.js")
+    script(src="/assets/statics/js/channel_subscribe.js") 

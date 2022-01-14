@@ -10,6 +10,7 @@ module.exports = {
         channel_edit: `${url}/channel/edit.js`,
         watch_watch: `${url}/watch/watch.js`,
         watch_edit: `${url}/watch/edit.js`,
+        channel_subscribe: `${url}/channel/subscribe.js`,
     },
     output: {
         filename: 'js/[name].js',

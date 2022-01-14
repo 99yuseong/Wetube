@@ -13,10 +13,12 @@ import {
     logout,
     changePassword,
     editCheck,
+    subscribe,
 } from '../controllers/channelController';
 
 const channel = express.Router();
 
+channel.route('/:id/subscribe').get(subscribe);
 channel.route('/:id').get(showChannel);
 channel
     .route('/:id/edit')

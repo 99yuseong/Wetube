@@ -1,29 +1,49 @@
 extends ../base/layout
 include ../base/mixins/video
+include ../base/mixins/avatar
+include ../base/mixins/subscriptions
 
 block content 
-    div
-        img(src=`${channel.avatarUrl.startsWith("https") ? channel.avatarUrl : `/${channel.avatarUrl}`}`, alt=`${channel.name}의 avatar image`)
+    section.channel
         header
-            h1 #{showingChannel.name}
-            small #{showingChannel.subscribed} #{showingChannel.subscribed < 2 ? "subscriber" : "suscribers"}
-        button(type="button") Subscribe
-
-    if channel && channel._id.valueOf() === id
-        hr
-        a(href=`${showingChannel._id}/edit`) Edit Channel &rarr; 
-        hr
-    ul
-        li home
-            br
-            if(showingChannel.videos)
-                +video(showingChannel.videos)
-            else
-                span Nothing found.
-        
-        li infomation
-            br
-            if(showingChannel.description)
-                p=showingChannel.description
-            else
-                span No description
+            div
+                +avatar-noanchor(showingChannel)
+                div
+                    h1 #{showingChannel.name}
+                    small.subscribers #{showingChannel.subscribed}
+                    small  #{showingChannel.subscribed < 2 ? "subscriber" : "suscribers"}
+                if channel && channel._id.valueOf() === id
+                    button(type="button")
+                        a(href=`${showingChannel._id}/edit`) Edit Channel &rarr; 
+                else
+                    +subscribedButton(showingChannel)
+            ul
+                li 
+                    h2
+                        button home
+                li 
+                    h2
+                        button infomation
+                li
+                    h2
+                        button
+                            i.ic-search
+                            form(method="GET")
+                                input(name="keyword", placeholder="search") 
+        ul
+            li
+                h3  Uploaded Video
+                div    
+                    if(showingChannel.videos)
+                        +video(showingChannel.videos)
+                    else
+                        span Nothing found.
+            li
+                h3 Channel description
+                div
+                    if(showingChannel.description)
+                        p=showingChannel.description
+                    else
+                        span No description
+block scripts
+    script(src="/assets/statics/js/channel_subscribe.js") 

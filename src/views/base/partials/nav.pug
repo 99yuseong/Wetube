@@ -1,32 +1,39 @@
-nav
-    div
-        button
-            i.ic-hamburger
-        a(href="/")
-            img(src="/assets/icons/Youtube-Logo.svg", alt="Button to go home")
+include ../mixins/subscriptions
 
+nav
     ul
         li
             a(href="/") 
                 i.ic-home
-                i.ic-home-fill
-                span 홈
+                //- i.ic-home-fill
+                span Home
         li
             a(href="/feed/explore") 
                 i.ic-explore
-                i.ic-explore-fill
-                span 탐색
+                //- i.ic-explore-fill
+                span Explore
         li
             a(href="/feed/subscriptions") 
                 i.ic-subscriptions
-                i.ic-subscriptions-fill
-                span 구독
+                //- i.ic-subscriptions-fill
+                span Subscriptions
+    ul
         li
             a(href="/feed/library")
                 i.ic-library
-                i.ic-library-fill
-                span 보관함
-
-    //- +subscription(구독 배열)
-
-
+                //- i.ic-library-fill
+                span Library
+        li
+            a(href="#")
+                i.ic-library
+                //- i.ic-library-fill
+                span Your Videos
+        li
+            a(href="#")
+                i.ic-liked
+                //- i.ic-liked-fill
+                span liked Videos
+    if channel
+        +showSubscriptions(channel)
+    else
+        span wow

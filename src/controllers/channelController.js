@@ -128,7 +128,9 @@ export const loginCompleteGithub = async (req, res) => {
             req.flash('error', 'Can not Login with Github');
             return res.status(400).redirect('/login');
         }
-        let channel = await Channel.findOne({ email: emailObj.email });
+        let channel = await Channel.findOne({ email: emailObj.email }).populate(
+            'subscription'
+        );
         if (!channel) {
             channel = await Channel.create({
                 email: emailObj.email,
@@ -187,7 +189,9 @@ export const loginCompleteNaver = async (req, res) => {
                 headers: { Authorization: `${token_type} ${access_token}` },
             })
         ).json();
-        let channel = await Channel.findOne({ email: response.email });
+        let channel = await Channel.findOne({ email: response.email }).populate(
+            'subscription'
+        );
         if (!channel) {
             channel = await Channel.create({
                 email: response.email,
@@ -215,7 +219,9 @@ export const login = async (req, res) => {
             body: { email, password },
         } = req;
 
-        const channel = await Channel.findOne({ email });
+        const channel = await Channel.findOne({ email }).populate(
+            'subscription'
+        );
         if (!channel) {
             req.flash('error', 'email do not exists');
             return res.status(400).redirect('/login');
@@ -262,7 +268,7 @@ export const edit = async (req, res) => {
                 avatarUrl: file ? file.path : channel.avatarUrl,
             },
             { new: true }
-        );
+        ).populate('subscription');
 
         req.session.channel = editedChannel;
         if (
@@ -378,6 +384,48 @@ export const remove = async (req, res) => {
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect('/');
+};
+
+export const subscribe = async (req, res) => {
+    const {
+        params: { id },
+        session: {
+            channel: { _id },
+        },
+    } = req;
+
+    const user = await Channel.findById(_id);
+    const channelToSubscribe = await Channel.findById(id);
+    const saved = user.subscription.find(
+        (element) => element._id.valueOf() === id
+    );
+    // return Boolean
+    let subscribedBoolean;
+
+    if (!saved) {
+        // if not saved, push to array
+        user.subscription.push({
+            _id: channelToSubscribe._id,
+            avatarUrl: channelToSubscribe.avatarUrl,
+            name: channelToSubscribe.name,
+        });
+        channelToSubscribe.subscribed += 1;
+        subscribedBoolean = true;
+    } else {
+        // if already saved, remove from array
+        user.subscription.splice(saved, 1);
+        channelToSubscribe.subscribed -= 1;
+        subscribedBoolean = false;
+    }
+
+    await channelToSubscribe.save();
+    req.session.channel = await user.save();
+    return res.json({
+        subscribed: subscribedBoolean,
+        name: channelToSubscribe.name,
+        avatarUrl: channelToSubscribe.avatarUrl,
+        _id: channelToSubscribe._id,
+    });
 };
 
 export const showSubscriptions = async (req, res) => {

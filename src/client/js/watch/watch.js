@@ -9,8 +9,6 @@ const dislikedIcon = dislikedBtn.querySelector('i');
 const dislikedNum = dislikedBtn.querySelector('strong');
 const saveLibraryBtn = watch.querySelector('.save-button');
 const librarySavedText = saveLibraryBtn.querySelector('strong');
-const subscribeBtn = watch.querySelector('.subscribe-button');
-const subscribers = watch.querySelector('.subscribers');
 
 const url = window.location.pathname;
 
@@ -77,24 +75,7 @@ const saveAtLibrary = async () => {
     }
 };
 
-const saveSubscribed = async () => {
-    const subscription = await (
-        await fetch(`${url}/api/subscription`, {
-            method: 'GET',
-        })
-    ).json();
-
-    if (subscription.saved) {
-        subscribeBtn.innerText = 'Unsubscribe';
-        subscribers.innerText = Number(subscribers.innerText) + 1;
-    } else {
-        subscribeBtn.innerText = 'subscribe';
-        subscribers.innerText = Number(subscribers.innerText) - 1;
-    }
-};
-
 watchVideo.addEventListener('ended', countViews);
 likedBtn.addEventListener('click', saveLiked);
 dislikedBtn.addEventListener('click', saveDisliked);
 saveLibraryBtn.addEventListener('click', saveAtLibrary);
-subscribeBtn.addEventListener('click', saveSubscribed);

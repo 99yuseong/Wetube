@@ -14,7 +14,13 @@ const channelSchema = new mongoose.Schema({
     description: { type: String },
     subscribed: { type: Number, default: 0 },
     videos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
-    subscription: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Channel' }],
+    subscription: [
+        {
+            _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Channel' },
+            avatarUrl: { type: String },
+            name: { type: String },
+        },
+    ],
     liked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
     disliked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
     library: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],

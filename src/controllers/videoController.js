@@ -5,6 +5,7 @@ import res from 'express/lib/response';
 
 export const home = async (req, res) => {
     const videos = await Video.find().populate('channel');
+    console.log(req.session);
     return res.render('watch/home', { videos });
 };
 
@@ -235,32 +236,6 @@ export const watchApi = async (req, res) => {
             user.library.splice(saved, 1);
             savedBoolean = false;
         }
-        req.session.channel = await user.save();
-        return res.json({ saved: savedBoolean });
-    }
-
-    if (section === 'subscription') {
-        console.log('subscription');
-        const videoChannel = await Channel.findById(video.channel);
-        console.log(videoChannel);
-        const saved = user.subscription.indexOf(video.channel);
-
-        // retrun Boolean
-        let savedBoolean;
-        if (saved === -1) {
-            // if not saved, push to array
-            user.subscription.push(video.channel);
-            videoChannel.subscribed += 1;
-            savedBoolean = true;
-        } else {
-            // if already saved, remove from array
-            user.subscription.splice(saved, 1);
-            videoChannel.subscribed -= 1;
-            savedBoolean = false;
-        }
-
-        await video.save();
-        await videoChannel.save();
         req.session.channel = await user.save();
         return res.json({ saved: savedBoolean });
     }
