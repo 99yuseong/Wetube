@@ -332,6 +332,19 @@ export const changePassword = async (req, res) => {
     }
 };
 
+export const checkPassword = async (req, res) => {
+    const {
+        body: { password },
+        params: { id },
+    } = req;
+
+    const channel = await Channel.findById(id);
+    if (channel) {
+        const match = await Channel.pwCheck(password, channel.password);
+        return res.json({ match });
+    }
+};
+
 export const showChannel = async (req, res) => {
     const {
         params: { id },

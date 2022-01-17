@@ -4,6 +4,7 @@ import {
     videoUpload,
     protectMiddlware,
     channelOwnerMiddleware,
+    socialOnlyPreventMiddleware,
 } from '../middleware';
 import { upload } from '../controllers/videoController';
 import {
@@ -14,6 +15,7 @@ import {
     changePassword,
     editCheck,
     subscribe,
+    checkPassword,
 } from '../controllers/channelController';
 
 const channel = express.Router();
@@ -28,9 +30,10 @@ channel
 channel.post('/:id/edit/:section', editCheck);
 channel
     .route('/:id/changePassword')
-    .all(protectMiddlware, channelOwnerMiddleware)
+    .all(protectMiddlware, socialOnlyPreventMiddleware, channelOwnerMiddleware)
     .get(changePassword)
     .post(changePassword);
+channel.route('/:id/changePassword/check').post(checkPassword);
 channel
     .route('/:id/deleteChannel')
     .all(protectMiddlware, channelOwnerMiddleware)
