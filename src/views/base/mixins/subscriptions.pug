@@ -1,14 +1,13 @@
 include ./avatar
 mixin showSubscriptions(channel)
     ul.nav-subscriptions
+        strong.nav-title SUBSCRIPTIONS
         if channel.subscription.length > 0
             for subscription in channel.subscription
                 li(id=subscription._id)
                     a(href=`/channel/${subscription._id}`)
                         +avatar-noanchor(subscription)
                         span #{subscription.name}
-        li
-            span add subscriptions
 
 mixin subscribedButton(showingChannel)
-    button(type="button", data-_id=`${showingChannel._id}`).subscribe-button #{!channel.subscription.find((element) => element._id.valueOf() === showingChannel._id.valueOf()) ? 'Subscribe' : 'Unsubscribe'}
+    button(type="button", class=`${!channel.subscription.find((element) => element._id.valueOf() === showingChannel._id.valueOf()) ? '' : 'subscribed'}`, data-_id=`${showingChannel._id}`).subscribe-button #{!channel.subscription.find((element) => element._id.valueOf() === showingChannel._id.valueOf()) ? 'Subscribe' : 'Subscribed'}

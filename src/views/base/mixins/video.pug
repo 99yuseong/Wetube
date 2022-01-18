@@ -1,15 +1,25 @@
-mixin video(videos)
-    ul
+include ./avatar
+include ./date
+mixin video(videos)     
+    ul.video-mixin
         each video in videos
             li
-                a(href=`/watch/${video._id}`)
-                    div
+                a(href=`/watch/${video._id}`).video-anchor
+                    div.thumb
                         img(src=`/${video.thumbUrl}`)
-                        Strong #{video.title}
-                    small #{video.channel.name}
-                    br
-                    small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
-                    span ㆍ
-                    small #{video.meta.createdAt}
+                        //- video(src=`/${video.videoUrl}`, controls) 
+                    div.video-data
+                        if showingChannel
+                            +avatar-noanchor(showingChannel)
+                        else
+                            +avatar-noanchor(video.channel)
+                        div.video-data-text
+                            h3 #{video.title}
+                            div.video-data-text-meta
+                                small #{video.channel.name}
+                                div
+                                    small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
+                                    span ㆍ
+                                    +date(video.meta.createdAt)
         else
-            h2 Sorry, nothing found
+            span Sorry, nothing found

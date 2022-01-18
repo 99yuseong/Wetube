@@ -1,15 +1,37 @@
 extends ../base/layout
 
 block content
-    form(method="POST", enctype="multipart/form-data")
-        label(for="video") Video File
-        input(type="file", name="video", accept="video/*", id="video", required)
-        label(for="thumbnail") Thumbnail File
-        input(type="file", name="thumbnail", accept="image/*", id="thumbnail", required)
-        label(for="title") Title
-        input(type="text", placeholder="Video Title", name="title", id="title", required)
-        label(for="description") Description 
-        input(type="text", placeholder="About your video...", name="description", id="description")
-        label(for="hashtag") Hashtags, seperated by comma
-        input(type="text", placeholder="#more #than #three #hashtags", name="hashtag", id="hashtag")
-        input(type="submit", value="Upload Video")
+    section.center
+        div.upload-container
+            form(method="POST", enctype="multipart/form-data").thumbnail-form
+                header
+                    h1
+                        strong Upload Video
+                div
+                    h3
+                        label(for="video") Video File
+                    div
+                        video(src='', alt='video', controls).video
+                    input(type="file", name="video", accept="video/*", id="video", required).input-video
+                div
+                    h3
+                        label(for="thumbnail") Thumbnail File
+                    div.thumb
+                        img(src='', alt='thumbnail').img-thumbnail
+                    input(type="file", name="thumbnail", accept="image/*", id="thumbnail", required).input-thumbnail
+                div
+                    h3
+                        label(for="title") Title
+                    input(type="text", placeholder="Video Title", name="title", id="title", required)
+                div    
+                    h3
+                        label(for="description") Description 
+                    input(type="text", placeholder="About your video...", name="description", id="description")
+                div    
+                    h3
+                        label(for="hashtag") Hashtags, seperated by comma
+                    input(type="text", placeholder="#more #than #three #hashtags", name="hashtag", id="hashtag")
+                button(type="submit").submit 
+                    strong Upload Video
+block scripts
+    script(src="/assets/statics/js/watch_thumbnail.js")

@@ -1,0 +1,77 @@
+article.watch {
+    width: 100%;
+    padding: 24px 3%;
+}
+
+section.watch-video {
+    div.watch-video-player {
+        video {
+            width: 100%;
+            height: auto;
+        }
+    }
+    header.watch-video-data {
+        padding: 20px 0 8px 0;
+        border-bottom: 1px solid $border;
+        .watch-title {
+            small {
+                color: $blue;
+            }
+        }
+
+        .watch-meta {
+            @include flex(space-between, center);
+            .watch-meta-data {
+                color: $gray;
+            }
+            .watch-meta-button ul {
+                @include flex;
+                li {
+                    padding: 0 8px;
+                    button {
+                        @include flex;
+                        i {
+                            padding: 6px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+section.watch-channel {
+    padding: 18px 0;
+    border-bottom: 1px solid $border;
+    header {
+        @include flex(space-between);
+    }
+
+    div.channel-avatar-title {
+        @include flex(flex-start);
+        div.channel-avatar {
+            img {
+                @include avatar(watch);
+                margin-right: 16px;
+            }
+        }
+        small {
+            color: $gray;
+        }
+    }
+    div.channel-subscription {
+        button {
+            padding: 10px 16px;
+            border-radius: 2px;
+            color: $white;
+            background-color: $red;
+        }
+        .subscribed {
+            color: $gray;
+            background-color: $background;
+        }
+    }
+    div.channel-video-description {
+        margin-left: 64px;
+    }
+}

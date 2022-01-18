@@ -1,35 +1,44 @@
 extends ../base/layout
 
 block content
-    section.edit-video
-        header
-            h1
-                strong Edit Video Form
+    section.edit-video.center
         div.edit-container
-            video(src=`/${channel.tempReupload
-                            ? channel.tempReupload
-                            : video.videoUrl}`, controls)
-            a(href="reupload") Re-upload Video file
-            form(method="POST", enctype="multipart/form-data").edit-video-form
+            form(method="POST", enctype="multipart/form-data").edit-video-form.thumbnail-form
+                header
+                    h1
+                        strong Edit Video
+                div.video-upload
+                    video(src=`/${channel.tempReupload
+                                    ? channel.tempReupload
+                                    : video.videoUrl}`, controls).video
+                    button(type='button')
+                        a(href="reupload") 
+                            strong Re-upload Video file
                 div.edit-content
                     div.edit-thumbnail
-                        img(src=`/${video.thumbUrl}`, alt=`${video.title}'s thumbnail`).img-thumbnail
-                        h2
+                        div.thumb
+                            img(src=`/${video.thumbUrl}`, alt=`${video.title}'s thumbnail`).img-thumbnail
+                        h3
                             label(for="thumbnail") Thumbnail File
                         input(type="file", name="thumbnail", accept="image/*", id="thumbnail").input-thumbnail
                     div.edit-title    
-                        h2
+                        h3
                             label(for="title") Title
                         input(type="text", placeholder="Video Title", name="title", id="title", value=`${video.title}` )
                     div.edit-description    
-                        h2
+                        h3
                             label(for="description") Description 
                         input(type="text", placeholder="About your video...", name="description", id="description", value=`${video.description}`)
                     div.edit-hashtag    
-                        h2
+                        h3
                             label(for="hashtag") Hashtags, seperated by comma
                         input(type="text", placeholder="#more #than #three #hashtags", name="hashtag", id="hashtag", value=`${video.hashtag}`)
-                    input(type="submit", value="Save").edit-btn
-            a(href="delete") Delete Video
+                    button(type="submit").submit.edit-btn
+                        strong Save
+            footer.join-part
+                div
+                    strong Want to delete this video? &rarr; 
+                    a(href="delete") 
+                        strong Delete Video
 block scripts
-    script(src="/assets/statics/js/watch_edit.js") 
+    script(src="/assets/statics/js/watch_thumbnail.js") 

@@ -1,6 +1,7 @@
 extends ../base/layout
 include ../base/mixins/avatar
 include ../base/mixins/subscriptions
+include ../base/mixins/date
 block content
     article.watch
         section.watch-video
@@ -8,14 +9,15 @@ block content
                 video(src=`/${video.videoUrl}`, controls)
             header.watch-video-data
                 div.watch-title
-                    small #{video.hashtag}
+                    each hashtag in video.hashtag
+                        small #{hashtag}  
                     h1 #{video.title}
-                div
+                div.watch-meta
                     div.watch-meta-data
                         small.views #{video.meta.views} 
                         small #{video.meta.views < 2 ? "view" : "views"}
                         span ㆍ
-                        small #{video.meta.createdAt}
+                        +date(video.meta.createdAt)
                     div.watch-meta-button
                         ul
                             li
@@ -40,12 +42,13 @@ block content
                                     strong #{channel.library.includes(video._id.valueOf()) ? 'Unsave' : 'save'}
         section.watch-channel
             header
-                div.channel-avatar
-                    +avatar(video.channel)
-                div.channel-title
-                    h2 #{video.channel.name}
-                    small.subscribers #{video.channel.subscribed}
-                    small  #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
+                div.channel-avatar-title
+                    div.channel-avatar
+                        +avatar(video.channel)
+                    div.channel-title
+                        h3 #{video.channel.name}
+                        small.subscribers #{video.channel.subscribed}
+                        small  #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
                 div.channel-subscription
                     if channel && channel._id === video.channel._id.valueOf()
                         button(type="button") 
@@ -57,4 +60,5 @@ block content
 
         //- comments
 block scripts
-    script(src="/assets/statics/js/channel_subscribe.js") 
+    script(src="/assets/statics/js/channel_subscribe.js")
+    script(src="/assets/statics/js/watch_watch.js") 

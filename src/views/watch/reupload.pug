@@ -1,7 +1,13 @@
 extends ../base/layout
 
 block content
-    form(method="post", enctype="multipart/form-data")
-        label(for="reupload") Re-upload Video File 
-        input(type="file", name="video", id="reupload", accept="video/*") 
-        input(type="submit", value="Pre-Reupload")
+    section.reupload.center
+        header
+            h1
+                strong Reupload Video
+        form(method="post", enctype="multipart/form-data")
+            h3
+                label(for="reupload") Re-upload Video File 
+            input(type="file", name="video", id="reupload", accept="video/*") 
+            button(type="submit").submit
+                strong Pre-Reupload

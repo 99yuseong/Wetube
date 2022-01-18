@@ -34,7 +34,8 @@ const subscribe = async (event) => {
         })
     ).json();
 
-    event.target.innerText = subscribed ? 'Unsubscribe' : 'Subscribe';
+    event.target.innerText = subscribed ? 'Subscribed' : 'Subscribe';
+    event.target.classList.toggle('subscribed');
     subscribers.innerText = subscribed
         ? Number(subscribers.innerText) + 1
         : Number(subscribers.innerText) - 1;
@@ -42,4 +43,6 @@ const subscribe = async (event) => {
     showSubscriptionAtNav(subscribed, _id, name, avatarUrl);
 };
 
-subscribeBtn.addEventListener('click', subscribe);
+if (subscribeBtn) {
+    subscribeBtn.addEventListener('click', subscribe);
+}
