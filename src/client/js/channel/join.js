@@ -1,4 +1,5 @@
 // join
+const joinSection = document.querySelector('.join-section');
 const joinForm = document.querySelector('.join-form');
 const joinInputEmail = joinForm.querySelector('.input-email');
 const joinInputPw = joinForm.querySelector('.input-password');
@@ -12,7 +13,13 @@ const joinPassword2Msg = joinForm.querySelector('.password-confirm-msg');
 const joinAvatar = joinForm.querySelector('.avatar');
 const joinBtn = joinForm.querySelector('.join-btn');
 
-// join handers
+const invalid = (element) => {
+    element.classList.add('invalid');
+};
+const valid = (element) => {
+    element.classList.remove('invalid');
+};
+
 const joinEmailCheck = async (event) => {
     // email valid check
     const emailFormat = new RegExp(
@@ -22,7 +29,8 @@ const joinEmailCheck = async (event) => {
     if (!formatOk) {
         joinEmailMsg.innerText =
             joinInputEmail.value === '' ? 'Required' : 'Email is invalid';
-        event.target.classList.add('invalid');
+        invalid(event.target);
+        invalid(joinEmailMsg);
         return;
     }
     // registered email check
@@ -37,10 +45,12 @@ const joinEmailCheck = async (event) => {
     ).json();
     if (check.email === 'taken') {
         joinEmailMsg.innerText = 'Already taken';
-        event.target.classList.add('invalid');
+        invalid(event.target);
+        invalid(joinEmailMsg);
     } else if (check.email === 'valid') {
-        joinEmailMsg.innerText = 'Valid Email';
-        event.target.classList.remove('invalid');
+        joinEmailMsg.innerText = 'Email Valid';
+        valid(event.target);
+        valid(joinEmailMsg);
     }
 };
 
@@ -56,11 +66,13 @@ const joinNameCheck = async (event) => {
     ).json();
     if (check.name === 'taken') {
         joinNameMsg.innerText = 'Already taken';
-        event.target.classList.add('invalid');
+        invalid(event.target);
+        invalid(joinNameMsg);
     } else {
         joinNameMsg.innerText =
-            joinInputName.value === '' ? 'Required' : 'Valid Channel name';
-        event.target.classList.remove('invalid');
+            joinInputName.value === '' ? 'Required' : 'Channel name Valid';
+        valid(event.target);
+        valid(joinNameMsg);
     }
 };
 
@@ -73,10 +85,13 @@ const joinPwCheck = (event) => {
             joinInputPw.value === ''
                 ? 'Required'
                 : 'more than 8 characters, and one or more [Letters, Numbers, and (!)(@)(#)($)(%)(&)(*)(?)]';
-        event.target.classList.add('invalid');
+
+        invalid(event.target);
+        invalid(joinPasswordMsg);
     } else {
-        joinPasswordMsg.innerText = 'password ok';
-        event.target.classList.remove('invalid');
+        joinPasswordMsg.innerText = 'Password Valid';
+        valid(event.target);
+        valid(joinPasswordMsg);
     }
 };
 
@@ -86,11 +101,15 @@ const joinPwConfirm = (event) => {
             joinInputPw.value === ''
                 ? 'Required'
                 : 'Password confirmation Error';
-        joinInputPw2.classList.add('invalid');
+        invalid(joinInputPw2);
+        invalid(joinPassword2Msg);
     } else {
         joinPassword2Msg.innerText =
-            joinInputPw.value === '' ? 'Required' : 'password confirmation ok';
-        joinInputPw2.classList.remove('invalid');
+            joinInputPw.value === ''
+                ? 'Required'
+                : 'Password Confirmation Valid';
+        valid(joinInputPw2);
+        valid(joinPassword2Msg);
     }
 };
 
@@ -105,13 +124,14 @@ const joinShowAvatar = () => {
 const joinValidCheck = (event) => {
     event.preventDefault();
     const required = joinForm.querySelectorAll('.invalid');
+    console.log(required);
     required.forEach((element) => {
         if (element.classList.contains('invalid') && element.value === '') {
             element.nextSibling.innerText = 'required';
         }
     });
-    if (required) {
-        required[0].previousSibling.scrollIntoView();
+    if (required.length !== 0) {
+        joinSection.scrollIntoView();
         return;
     }
     return joinForm.submit();

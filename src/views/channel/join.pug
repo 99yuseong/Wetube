@@ -1,45 +1,48 @@
 extends ../base/layout
 
 block content
-    seciton.join
+    section.join-section.center
         header
             h1
                 strong Join Form
-        div.form-container
+        div.join-container
             form(method="post", enctype="multipart/form-data").join-form
                 div.join-content
                     div.join-email
-                        h2
+                        h3
                             label(for="email") Email
                         input(type="email", name="email", id="email", required).input-email.invalid
-                        span.email-msg
+                        span.email-msg.msg.invalid
                     div.join-password
-                        h2
+                        h3
                             label(for="password") Password
                         input(type="password", name="password", id="password", required).input-password.invalid
-                        span.password-msg
-                        h2
+                        span.password-msg.msg.invalid
+                        h3
                             label(for="password2") Password Confirmation
                         input(type="password", name="password2", id="password2" required ).input-password2.invalid
-                        span.password-confirm-msg
+                        span.password-confirm-msg.msg.invalid
                     div.join-name
-                        h2
+                        h3
                             label(for="name") Channel-name
                         input(type="text", name="name", id="name", required).input-channel-name.invalid
-                        span.name-msg
+                        span.name-msg.msg.invalid
                     div.join-avatar
-                        h2
+                        h3
                             label(for="avatar") Avatar
-                        input(type="file", name="avatar", accept="image/*", id="avatar").input-avatar 
                         img(src="/uploads/avatars/Default Avatar.png").avatar
+                        input(type="file", name="avatar", accept="image/*", id="avatar").input-avatar
                     div.join-description
-                        h2
+                        h3
                             label(for="description") Description
-                        textarea( name="description", cols="30", rows="10", id="description")  
-                input(type="submit", value="Join").join-btn
-    hr
-    div
-        strong Already have an Account? &rarr; 
-        a(href="/login") Login
+                        textarea( name="description", cols="30", rows="10", id="description")
+                div.button-part
+                    button(type="submit").join-btn.submit
+                        strong Join
+            footer.login-part
+                div
+                    strong Already have an Account? &rarr; 
+                    a(href="/login") 
+                        strong Login
 block scripts
     script(src="/assets/statics/js/channel_join.js") 

@@ -1,14 +1,30 @@
 extends ../base/layout
 
 block content
-    form(method="POST")
-        input(type="email", placeholder="Email", name="email")
-        input(type="password", placeholder="Password", name="password")
-        input(type="submit", value="Login")
-
-    a(href="/socialLogin/github") Login with Github
-    a(href="/socialLogin/naver") Login with Naver
-    hr
-    div
-        strong Don't have an Account? &rarr; 
-        a(href="/join") Join
+    section.center
+        header 
+            h1
+                strong Login
+        div.login-container                
+            form(method="POST").form
+                div
+                    h3.label
+                        label(for="email") Email
+                    input(type="email", name="email", id="email")
+                div    
+                    h3.label
+                        label(for="password") Password
+                    input(type="password", name="password", id="password")
+                button(type="submit").submit
+                    strong Login
+                button(type="button").github
+                    a(href="/socialLogin/github") 
+                        strong Login with Github
+                button(type="button").naver
+                    a(href="/socialLogin/naver") 
+                        strong Login with Naver
+            footer.join-part
+                div
+                    strong Don't have an Account? &rarr; 
+                    a(href="/join") 
+                        strong Join
