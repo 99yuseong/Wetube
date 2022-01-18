@@ -1,0 +1,54 @@
+nav {
+    width: 240px;
+    height: calc(100vh - 56px);
+    background-color: $background;
+    // overflow: scroll;
+
+    .nav-title {
+        display: block;
+        padding: 8px 24px;
+        color: $gray;
+    }
+
+    ul {
+        padding: 12px 0;
+        border-bottom: 1px solid $border;
+        a {
+            @include flex(flex-start);
+            padding: 8px 8px 8px 24px;
+
+            i {
+                margin-right: 24px;
+            }
+        }
+    }
+
+    ul.nav-subscriptions {
+        border-bottom: 1px solid $border;
+        img {
+            @include avatar(sub);
+            margin-right: 24px;
+        }
+    }
+
+    div.nav-login {
+        padding: 16px 32px;
+        border-bottom: 1px solid $border;
+        p {
+            margin-bottom: 12px;
+        }
+        a {
+            @include flex();
+            @include loginBtn;
+        }
+    }
+
+    div.nav-copyright {
+        @include flex-column(flex-start, flex-start);
+        padding: 16px 24px;
+        small {
+            font-size: 12px;
+            color: $gray;
+        }
+    }
+}

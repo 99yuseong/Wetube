@@ -1,0 +1,28 @@
+.layout {
+    .layout-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+    .layout-nav-content {
+        @include flex(flex-start, flex-start);
+        .layout-nav {
+            position: sticky;
+            top: 56px;
+            left: 0;
+        }
+        .layout-content {
+            width: 100%;
+            min-height: calc(100vh - 56px);
+            @include flex(center, flex-start);
+            flex-grow: 1;
+        }
+    }
+}
+
+section.center {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    padding: 48px 0;
+    @include flex-column();
+}

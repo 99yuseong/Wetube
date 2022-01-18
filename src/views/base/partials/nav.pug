@@ -36,4 +36,14 @@ nav
     if channel
         +showSubscriptions(channel)
     else
-        span wow
+        div.nav-login
+            p Sign in to like videos, comment, and subscribe.
+            a(href="/login")
+                i.ic-my-channel
+                span Sign In
+
+    div.nav-copyright
+        small &copy;99yuseong
+        small 2022 Project wetube
+
+    

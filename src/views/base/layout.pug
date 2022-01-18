@@ -4,9 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        //- styles
         link(rel="stylesheet" href="/assets/statics/css/style.css")
-        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
         link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
         title title | WeTube
         //- favicon
@@ -27,8 +25,13 @@ html(lang="en")
         if messages && messages.success
             div.message.success
                 span= messages.success
-        include partials/header
-        include partials/nav
-        block content
+        div.layout
+            div.layout-header
+                include partials/header
+            div.layout-nav-content
+                div.layout-nav
+                    include partials/nav
+                div.layout-content
+                    block content
         script(src="/assets/statics/js/main.js")
         block scripts

@@ -14,6 +14,8 @@ mousedownMenu = (event) => {
     event.preventDefault();
 };
 
-avatarBtn.addEventListener('click', showMenu);
-avatarBtn.addEventListener('blur', hideMenu);
-menu.addEventListener('mousedown', mousedownMenu);
+if (avatarBtn) {
+    avatarBtn.addEventListener('click', showMenu);
+    avatarBtn.addEventListener('blur', hideMenu);
+    menu.addEventListener('mousedown', mousedownMenu);
+}

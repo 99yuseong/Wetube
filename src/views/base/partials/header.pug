@@ -1,24 +1,44 @@
 include ../mixins/avatar
-div
-    button
-        i.ic-hamburger
-    a(href="/")
-        img(src="/assets/icons/Youtube-Logo.svg", alt="Button to go home")
-          
-div
-    form(method="GET", action="/search")
-        input(type="text", name="keyword", placeholder="Search")
-        button(type="submit")
-            i.ic-search
-div
-    if loggedIn
-        a(href=`/channel/${channel._id}/upload`)
-            i.ic-create
-        a(href=`/channel/${channel._id}/logout`)
-            Strong Logout
-        +avatar(channel)
-    else
-        a(href="/login")
-            strong Login
-        a(href="/join")
-            strong Join
+header.header-container
+    div.header-left-section
+        button.header-menu
+            i.ic-hamburger
+        h1
+            a(href="/").header-home
+                img(src="/assets/icons/Youtube-Logo.svg", alt="Button to go home")
+
+    div.header-center-section
+        form(method="GET", action="/search").header-form
+            input(type="text", name="keyword", placeholder="Search")
+            button(type="submit")
+                i.ic-search
+
+    div.header-right-section
+        if loggedIn
+            ul.header-right-loggedIn
+                li.upload
+                    a(href=`/channel/${channel._id}/upload`)
+                        i.ic-create
+                li.avatar
+                    button.avatar-btn
+                        +avatar-noanchor(channel)
+            ul.avatar-click-menu.hidden
+                li
+                    a(href=`/channel/${channel._id}`) 
+                        i.ic-my-channel
+                        span My Channel
+                li
+                    a(href=`/channel/${channel._id}/edit`) 
+                        i.ic-edit-channel
+                        span Edit Channel
+                li
+                    a(href=`/channel/${channel._id}/logout`) 
+                        i.ic-logout
+                        span Logout
+                
+        else
+            ul.header-right-notLoggedIn
+                li
+                    a(href="/login")
+                        i.ic-my-channel
+                        span Sign In
