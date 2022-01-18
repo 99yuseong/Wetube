@@ -1,18 +1,17 @@
 extends ../base/layout
 
 block content
-
-    h1 Delete this Channel
-    p Once you delete this channel, there is no going back.
-      br
-      | This will permanently delete #{channel.name} Channels, 
-      | #{channel.subscribed} subscribers. 
-      br
-      | Please type 
-      strong #{channel.name} 
-      | to confirm.
-
-    form(method="post")
-        label(for="delete") Enter "#{channel.name}"
-        input(type="text", placeholder="Channel name to delete", name="remove" id="delete")
-        input(type="submit", value="delete")
+    section.center
+        form(method="post")
+            h1 Delete this Channel
+            p Once you delete this channel, there is no going back. 
+              | This will permanently delete #{channel.name} Channels, 
+              | #{channel.subscribed} subscribers. 
+              | Please type 
+              strong #{channel.name} 
+              | to confirm.
+            label(for="delete") 
+                strong Enter "#{channel.name}"
+            input(type="text", placeholder="Channel name to delete", name="remove" id="delete")
+            button(type="submit").submit 
+              strong Delete

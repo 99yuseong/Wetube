@@ -1,10 +1,16 @@
-// edit
 const editChannelForm = document.querySelector('.edit-channel-form');
 const editInputName = editChannelForm.querySelector('.input-name');
 const editInputAvatar = editChannelForm.querySelector('.input-avatar');
 const editNameMsg = editChannelForm.querySelector('.name-msg');
 const editAvatar = editChannelForm.querySelector('.avatar');
 const editBtn = editChannelForm.querySelector('.edit-btn');
+
+const invalid = (element) => {
+    element.classList.add('invalid');
+};
+const valid = (element) => {
+    element.classList.remove('invalid');
+};
 
 const nameCheck = async () => {
     const url = window.location.pathname;
@@ -20,10 +26,12 @@ const nameCheck = async () => {
     if (check.name === 'taken') {
         editNameMsg.innerText =
             editInputName.value === '' ? '' : 'Channel name is already taken';
-        editInputName.classList.add('invalid');
+        invalid(editInputName);
+        invalid(editNameMsg);
     } else {
         // check.name === 'valid'
-        editInputName.classList.remove('invalid');
+        valid(editInputName);
+        valid(editNameMsg);
         editNameMsg.innerText =
             editInputName.value === '' ? '' : 'Valid Channel name';
     }

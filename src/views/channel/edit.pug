@@ -2,34 +2,38 @@ extends ../base/layout
 include ../base/mixins/avatar
 
 block content
-    seciton.edit-channel
+    section.edit-channel.center
         header
             h1
-                strong Edit Channel Form
+                strong Edit Channel
         div.edit-container
             form(method="post", enctype="multipart/form-data").edit-channel-form
                 div.edit-content
                     div.edit-name
-                        h2
+                        h3
                             label(for="name") Channel's name  
                         input(type="text", placeholder="Channel name", name="name", id="name", value=`${channel.name}`).input-name
-                        span.name-msg
+                        span.name-msg.msg.invalid
                     div.edit-avatar
-                        h2
-                            label(for="avatar") Change Avatar
-                        input(type="file", name="avatar", accept="image/*" ,id="avatar").input-avatar
+                        h3
+                            label(for="avatar") Avatar
                         img(src=`${channel.avatarUrl.startsWith("https") ? channel.avatarUrl : `/${channel.avatarUrl}`}`, alt=`${channel.name}의 avatar image`).avatar
+                        input(type="file", name="avatar", accept="image/*" ,id="avatar").input-avatar
                     div.edit-description
-                        h2
+                        h3
                             label(for="description") Description
                         textarea(placeholder="About your channel..." name="description", cols="30", rows="10", id="description")=channel.description
-                    input(type="submit", value="Save").edit-btn
-        hr
-        div.edit-change-password
-            a(href="changepassword") 
-                strong Change Password &rarr;
-        div.edit-delete-channel
-            a(href="deleteChannel") 
-                strong Delete Channel &rarr;
+                    button(type="submit").edit-btn.submit 
+                        strong Save
+            footer
+                if !channel.socialOnly
+                    div.edit-change-password
+                        strong Want to change password? &rarr;
+                        a(href="changepassword") 
+                            strong Change Password
+                div.edit-delete-channel
+                    strong Want to delete channel? &rarr;
+                    a(href="deleteChannel") 
+                        strong Delete Channel
 block scripts
     script(src="/assets/statics/js/channel_edit.js") 
