@@ -5,41 +5,46 @@ include ../base/mixins/subscriptions
 
 block content 
     section.channel
-        header
-            div
-                +avatar-noanchor(showingChannel)
-                div
-                    h1 #{showingChannel.name}
-                    small.subscribers #{showingChannel.subscribed}
-                    small  #{showingChannel.subscribed < 2 ? "subscriber" : "suscribers"}
-                if channel && channel._id.valueOf() === id
-                    button(type="button")
-                        a(href=`${showingChannel._id}/edit`) Edit Channel &rarr; 
-                else
-                    +subscribedButton(showingChannel)
-            ul
+        div.channel-container
+            header
+                div.channel-header-data
+                    div.channel-name-container
+                        +avatar-noanchor(showingChannel)
+                        div.channel-name
+                            h1 #{showingChannel.name}
+                            div
+                                small.subscribers #{showingChannel.subscribed}
+                                small  #{showingChannel.subscribed < 2 ? "subscriber" : "suscribers"}
+                    if channel && channel._id.valueOf() === id
+                        button(type="button")
+                            a(href=`${showingChannel._id}/edit`) Edit Channel
+                    else
+                        +subscribedButton(showingChannel)
+            ul.channel-menu-list
                 li 
-                    h2
-                        button home
+                    button 
+                        strong HOME
                 li 
-                    h2
-                        button infomation
-                li
-                    h2
-                        button
-                            i.ic-search
-                            form(method="GET")
-                                input(name="keyword", placeholder="search") 
-        ul
-            li
-                h3  Uploaded Video
+                    button 
+                        strong VIDEOS
+                li 
+                    button 
+                        strong ABOUT
+                li.search
+                    span
+                        i.ic-search
+                    form(method="GET").search-form
+                        input(name="keyword", placeholder="SEARCH") 
+        ul.channel-info-list
+            li.list
+                strong  Uploads ▶
                 div    
                     if(showingChannel.videos)
                         +video(showingChannel.videos)
                     else
                         span Nothing found.
-            li
-                h3 Channel description
+            li.list
+                strong About ▶
                 div
                     if(showingChannel.description)
                         p=showingChannel.description

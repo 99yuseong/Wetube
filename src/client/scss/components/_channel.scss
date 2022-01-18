@@ -1,0 +1,78 @@
+section.channel {
+    width: 100%;
+    .channel-container {
+        padding: 20px 3% 0;
+        background-color: $background-dark;
+        header {
+            padding: 12px 0;
+            .channel-header-data {
+                @include flex(space-between, center);
+                img {
+                    @include avatar(channel);
+                    margin-right: 24px;
+                }
+                .channel-name-container {
+                    @include flex(flex-start);
+                    .channel-name {
+                        @include flex-column(flex-start, flex-start);
+                        div {
+                            margin-top: 4px;
+                            small {
+                                color: $gray;
+                            }
+                        }
+                    }
+                }
+
+                button {
+                    padding: 10px 16px;
+                    border-radius: 2px;
+                    color: $white;
+                    background-color: $red;
+                }
+                .subscribed {
+                    color: $gray;
+                    background-color: $background;
+                }
+            }
+        }
+
+        .channel-menu-list {
+            width: 100%;
+            @include flex(flex-start);
+            button {
+                height: 47px;
+                padding: 0 32px;
+                color: $gray;
+                &:hover {
+                    color: $white;
+                }
+            }
+            .search {
+                @include flex(flex-start);
+                padding: 0 24px;
+                .search-form {
+                    input {
+                        margin-left: 8px;
+                        padding: 4px;
+                        border-bottom: 2px solid $background-dark;
+                        &:focus {
+                            border-bottom: 2px solid $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .channel-info-list {
+        padding: 20px 3% 0;
+        .list {
+            padding: 0 0 24px;
+            border-bottom: 1px solid $border;
+            strong {
+                display: block;
+                padding: 16px 0;
+            }
+        }
+    }
+}
