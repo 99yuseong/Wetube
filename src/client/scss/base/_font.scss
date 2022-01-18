@@ -24,6 +24,19 @@ i {
     -moz-osx-font-smoothing: grayscale;
 }
 
+[class^='ic-'] {
+    font-size: 24px;
+}
+
+.ic-edit-channel:before {
+    content: '\e915';
+}
+.ic-my-channel:before {
+    content: '\e916';
+}
+.ic-logout:before {
+    content: '\e917';
+}
 .ic-disliked:before {
     content: '\e91e';
     color: #fff;
@@ -78,6 +91,10 @@ i {
 }
 .ic-liked-fill:before {
     content: '\e90c';
+    color: #fff;
+}
+.ic-disliked-fill:before {
+    content: '\e918';
     color: #fff;
 }
 .ic-play:before {

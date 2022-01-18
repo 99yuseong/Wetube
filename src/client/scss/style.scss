@@ -1,6 +1,25 @@
-@import './base/variable';
-@import './base/font';
+// constants
+@import './constants/_color';
+@import './constants/_typography';
 
-body {
-    background-color: green;
-}
+// base
+@import './base/_font';
+@import './base/_normalize';
+@import './base/_reset';
+
+// mixins
+@import './mixins/_avatar';
+@import './mixins/_flexbox';
+
+//modules
+@import './modules/_form';
+@import './modules/video-grid';
+
+// layouts
+@import './layouts/_layouts';
+
+// components
+@import './components/_header';
+@import './components/_nav';
+@import './components/channel';
+@import './components/watch';

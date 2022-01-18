@@ -1,0 +1,24 @@
+@mixin avatar($location) {
+    display: block;
+    border-radius: 50%;
+    @if ($location == 'header') {
+        width: 32px;
+        height: 32px;
+    }
+    @if ($location == 'sub') {
+        width: 24px;
+        height: 24px;
+    }
+    @if ($location == 'video') {
+        width: 36px;
+        height: 36px;
+    }
+    @if ($location == 'watch') {
+        width: 48px;
+        height: 48px;
+    }
+    @if ($location == 'channel') {
+        width: 80px;
+        height: 80px;
+    }
+}
