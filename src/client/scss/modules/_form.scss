@@ -24,7 +24,7 @@ form:not(.header-form, .search-form) {
         margin: 16px 0 8px;
     }
 
-    input:not([type='file']) {
+    input:not([type='file']):not([type='range']) {
         width: 100%;
         padding: 16px 10px;
         border-radius: 4px;
@@ -52,9 +52,23 @@ form:not(.header-form, .search-form) {
         margin-top: 6px;
     }
 
-    .video {
-        width: 100%;
+    .recording-video {
         margin-bottom: 12px;
+    }
+
+    .video-player {
+        background: url('/assets/icons/video.svg');
+        background-position: center center;
+        background-size: 80px 80px;
+        background-repeat: no-repeat;
+        background-color: $gray;
+        overflow: hidden;
+        border-radius: 4px;
+        margin-bottom: 12px;
+    }
+    video {
+        display: block;
+        width: 100%;
     }
 
     img.avatar {
@@ -71,6 +85,12 @@ form:not(.header-form, .search-form) {
         margin-bottom: 12px;
         overflow: hidden;
         z-index: -1;
+        background: url('/assets/icons/img.svg');
+        background-position: center center;
+        background-size: 80px 80px;
+        background-repeat: no-repeat;
+        background-color: $gray;
+        border-radius: 4px;
         img {
             width: 100%;
             position: absolute;
@@ -91,7 +111,7 @@ form:not(.header-form, .search-form) {
         margin-top: 28px;
     }
 
-    button {
+    button:not([name='controls']) {
         width: 100%;
         padding: 16px 0;
         margin-bottom: 12px;
