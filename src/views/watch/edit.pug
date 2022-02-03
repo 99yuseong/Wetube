@@ -3,17 +3,33 @@ extends ../base/layout
 block content
     section.edit-video.center
         div.edit-container
-            form(method="POST", enctype="multipart/form-data").edit-video-form.thumbnail-form
+            form(method="POST", enctype="multipart/form-data").edit-video-form.thumbnail-form.form
                 header
                     h1
                         strong Edit Video
-                div.video-upload
+                div.video-upload.video-player
                     video(src=`/${channel.tempReupload
                                     ? channel.tempReupload
-                                    : video.videoUrl}`, controls).video
-                    button(type='button')
-                        a(href="reupload") 
-                            strong Re-upload Video file
+                                    : video.videoUrl}`).video
+                    div.video-controller
+                        input(type="range", step="0.05", value="0", min="0").time-line
+                        div.controller-container
+                            div.controller-left
+                                button(type="button", name="controls").play
+                                    i.ic-play
+                                button(type="button", name="controls").mute
+                                    i.ic-high-volume
+                                input(type="range", step="0.05", min="0", max="1").volume
+                                div.time 
+                                    span.current-time 00:00
+                                    span /
+                                    span.duration 00:00
+                            div.controller-right
+                                button(type="button", name="controls").fullscreen
+                                    i.ic-fullscreen
+                button(type='button')
+                    a(href="reupload") 
+                        strong Re-upload Video file
                 div.edit-content
                     div.edit-thumbnail
                         div.thumb
@@ -41,4 +57,5 @@ block content
                     a(href="delete") 
                         strong Delete Video
 block scripts
-    script(src="/assets/statics/js/watch_thumbnail.js") 
+    script(src="/assets/statics/js/watch_thumbnail.js")
+    script(src="/assets/statics/js/watch_videoController.js") 

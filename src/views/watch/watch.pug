@@ -5,9 +5,9 @@ include ../base/mixins/date
 block content
     article.watch
         section.watch-video
-            div.watch-video-player
+            div.video-player
                 video(src=`/${video.videoUrl}`)
-                div.watch-video-controller
+                div.video-controller
                     input(type="range", step="0.05", value="0", min="0").time-line
                     div.controller-container
                         div.controller-left
@@ -76,5 +76,6 @@ block content
 
         //- comments
 block scripts
+    script(src="/assets/statics/js/watch_videoController.js") 
     script(src="/assets/statics/js/channel_subscribe.js")
-    script(src="/assets/statics/js/watch_watch.js") 
+    script(src="/assets/statics/js/watch_watch.js")

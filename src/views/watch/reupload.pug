@@ -5,9 +5,30 @@ block content
         header
             h1
                 strong Reupload Video
-        form(method="post", enctype="multipart/form-data")
+        form(method="post", enctype="multipart/form-data").form
             h3
                 label(for="reupload") Re-upload Video File 
-            input(type="file", name="video", id="reupload", accept="video/*") 
+            div.video-player
+                video(src="").video
+                div.video-controller
+                    input(type="range", step="0.05", value="0", min="0").time-line
+                    div.controller-container
+                        div.controller-left
+                            button(type="button", name="controls").play
+                                i.ic-play
+                            button(type="button", name="controls").mute
+                                i.ic-high-volume
+                            input(type="range", step="0.05", min="0", max="1").volume
+                            div.time 
+                                span.current-time 00:00
+                                span /
+                                span.duration 00:00
+                        div.controller-right
+                            button(type="button", name="controls").fullscreen
+                                i.ic-fullscreen
+            input(type="file", name="video", id="reupload", accept="video/*").input-video
             button(type="submit").submit
                 strong Pre-Reupload
+block scripts
+    script(src="/assets/statics/js/watch_thumbnail.js")
+    script(src="/assets/statics/js/watch_videoController.js") 
