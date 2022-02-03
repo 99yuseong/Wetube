@@ -18,114 +18,152 @@ i {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
+    color: #fff;
+    &:before {
+        font-size: 24px;
+    }
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-[class^='ic-'] {
-    font-size: 24px;
+.ic-pause:before {
+    content: '\e90d';
 }
-
-.ic-edit-channel:before {
-    content: '\e915';
+.ic-play:before {
+    content: '\e920';
 }
-.ic-my-channel:before {
-    content: '\e916';
+.ic-edit:before {
+    content: '\e921';
+}
+.ic-fullscreen:before {
+    content: '\e922';
+}
+.ic-fullscreen-exit:before {
+    content: '\e923';
+}
+.ic-high-volume:before {
+    content: '\e924';
 }
 .ic-logout:before {
-    content: '\e917';
+    content: '\e925';
+}
+.ic-low-volume:before {
+    content: '\e926';
+}
+.ic-mute:before {
+    content: '\e927';
+}
+.ic-your-channel:before {
+    content: '\e928';
 }
 .ic-disliked:before {
     content: '\e91e';
-    color: #fff;
+}
+.ic-youtube-logo .path1:before {
+    content: '\e915';
+    color: rgb(255, 0, 0);
+}
+.ic-youtube-logo .path2:before {
+    content: '\e916';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path3:before {
+    content: '\e917';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path4:before {
+    content: '\e918';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path5:before {
+    content: '\e919';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path6:before {
+    content: '\e91a';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path7:before {
+    content: '\e91b';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path8:before {
+    content: '\e91c';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
+}
+.ic-youtube-logo .path9:before {
+    content: '\e91d';
+    margin-left: -4.5em;
+    color: rgb(255, 255, 255);
 }
 .ic-arrow-bottom:before {
     content: '\e900';
-    color: #fff;
 }
 .ic-arrow-top:before {
     content: '\e901';
-    color: #fff;
 }
 .ic-create:before {
     content: '\e902';
-    color: #fff;
 }
 .ic-explore:before {
     content: '\e903';
-    color: #fff;
 }
 .ic-explore-fill:before {
     content: '\e904';
-    color: #fff;
 }
 .ic-hamburger:before {
     content: '\e905';
-    color: #fff;
 }
 .ic-home:before {
     content: '\e906';
-    color: #fff;
 }
 .ic-home-fill:before {
     content: '\e907';
-    color: #fff;
 }
 .ic-left-bottom:before {
     content: '\e908';
-    color: #fff;
 }
 .ic-library:before {
     content: '\e909';
-    color: #fff;
 }
 .ic-library-fill:before {
     content: '\e90a';
-    color: #fff;
 }
 .ic-liked:before {
     content: '\e90b';
-    color: #fff;
 }
 .ic-liked-fill:before {
     content: '\e90c';
-    color: #fff;
 }
 .ic-disliked-fill:before {
-    content: '\e918';
-    color: #fff;
-}
-.ic-play:before {
-    content: '\e90d';
-    color: #fff;
+    content: '\e91f';
 }
 .ic-premium:before {
     content: '\e90e';
-    color: #fff;
 }
 .ic-premium-fill:before {
     content: '\e90f';
-    color: #fff;
 }
 .ic-save:before {
     content: '\e910';
-    color: #fff;
 }
 .ic-search:before {
     content: '\e911';
-    color: #fff;
 }
 .ic-subscriptions:before {
     content: '\e912';
-    color: #fff;
 }
 .ic-subscriptions-fill:before {
     content: '\e913';
-    color: #fff;
 }
 .ic-your-videos:before {
     content: '\e914';
-    color: #fff;
 }
