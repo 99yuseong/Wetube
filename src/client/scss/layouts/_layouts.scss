@@ -3,6 +3,7 @@
         position: sticky;
         top: 0;
         left: 0;
+        z-index: 3;
     }
     .layout-nav-content {
         @include flex(flex-start, flex-start);
@@ -10,12 +11,14 @@
             position: sticky;
             top: 56px;
             left: 0;
+            z-index: 3;
         }
         .layout-content {
             width: 100%;
             min-height: calc(100vh - 56px);
             @include flex(center, flex-start);
             flex-grow: 1;
+            z-index: 1;
         }
     }
 }

@@ -5,9 +5,42 @@ article.watch {
 
 section.watch-video {
     div.watch-video-player {
+        position: relative;
         video {
             width: 100%;
-            height: auto;
+            display: block;
+        }
+        div.watch-video-controller {
+            position: absolute;
+            width: 100%;
+            padding: 0 12px;
+            transform: translateY(-100%);
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 250ms ease-in-out;
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+            .time-line {
+                width: 100%;
+            }
+            button {
+                padding: 12px;
+            }
+            input {
+                height: 5px;
+                background-color: $gray;
+                &:hover {
+                    padding: 0.5px 0;
+                }
+            }
+            div.controller-container {
+                @include flex(space-between);
+            }
+            div.controller-left {
+                @include flex();
+            }
+        }
+        div.watch-video-controller.showing {
+            opacity: 1;
         }
     }
     header.watch-video-data {

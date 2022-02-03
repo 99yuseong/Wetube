@@ -6,7 +6,23 @@ block content
     article.watch
         section.watch-video
             div.watch-video-player
-                video(src=`/${video.videoUrl}`, controls)
+                video(src=`/${video.videoUrl}`)
+                div.watch-video-controller
+                    input(type="range", step="0.05", value="0", min="0").time-line
+                    div.controller-container
+                        div.controller-left
+                            button(type="button").play
+                                i.ic-play
+                            button(type="button").mute
+                                i.ic-high-volume
+                            input(type="range", step="0.05", min="0", max="1").volume
+                            div.time 
+                                span.current-time 00:00
+                                span /
+                                span.duration 00:00
+                        div.controller-right
+                            button.fullscreen
+                                i.ic-fullscreen
             header.watch-video-data
                 div.watch-title
                     each hashtag in video.hashtag
