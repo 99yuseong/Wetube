@@ -12,6 +12,8 @@ module.exports = {
         channel_changePassword: `${url}/channel/changePassword.js`,
         watch_watch: `${url}/watch/watch.js`,
         watch_thumbnail: `${url}/watch/thumbnail.js`,
+        watch_recorder: `${url}/watch/recorder.js`,
+        watch_videoController: `${url}/watch/videoController.js`,
     },
     output: {
         filename: 'js/[name].js',

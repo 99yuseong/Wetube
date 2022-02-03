@@ -3,21 +3,44 @@ extends ../base/layout
 block content
     section.center
         div.upload-container
-            form(method="POST", enctype="multipart/form-data").thumbnail-form
+            form(method="POST", enctype="multipart/form-data").thumbnail-form.form
                 header
                     h1
                         strong Upload Video
                 div
-                    h3
-                        label(for="video") Video File
+                    div.record-video
+                        h3
+                            label Record Video
+                        div
+                            video(src='', alt='video').recording-video
+                        button(type="button").start-recording Start Recording
                     div
-                        video(src='', alt='video', controls).video
-                    input(type="file", name="video", accept="video/*", id="video", required).input-video
+                        h3
+                            label Upload Video
+                        div.video-player
+                            video(src='', alt='video').video
+                            div.video-controller
+                                input(type="range", step="0.05", value="0", min="0").time-line
+                                div.controller-container
+                                    div.controller-left
+                                        button(type="button", name="controls").play
+                                            i.ic-play
+                                        button(type="button", name="controls").mute
+                                            i.ic-high-volume
+                                        input(type="range", step="0.05", min="0", max="1").volume
+                                        div.time 
+                                            span.current-time 00:00
+                                            span /
+                                            span.duration 00:00
+                                    div.controller-right
+                                        button(type="button", name="controls").fullscreen
+                                            i.ic-fullscreen
+                        input(type="file", name="video", accept="video/*", id="video", required).input-video
                 div
                     h3
                         label(for="thumbnail") Thumbnail File
                     div.thumb
-                        img(src='', alt='thumbnail').img-thumbnail
+                        img(src='').img-thumbnail
                     input(type="file", name="thumbnail", accept="image/*", id="thumbnail", required).input-thumbnail
                 div
                     h3
@@ -34,4 +57,6 @@ block content
                 button(type="submit").submit 
                     strong Upload Video
 block scripts
+    script(src="/assets/statics/js/watch_recorder.js")
     script(src="/assets/statics/js/watch_thumbnail.js")
+    script(src="/assets/statics/js/watch_videoController.js") 
