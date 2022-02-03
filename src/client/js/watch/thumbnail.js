@@ -1,4 +1,4 @@
-const form = document.querySelector('.thumbnail-form');
+const form = document.querySelector('.form');
 const imgThumb = form.querySelector('.img-thumbnail');
 const inputThumb = form.querySelector('.input-thumbnail');
 const video = form.querySelector('.video');
@@ -20,5 +20,9 @@ const showVideo = () => {
     reader.readAsDataURL(inputVideo.files[0]);
 };
 
-inputThumb.addEventListener('change', showThumbnail);
-inputVideo.addEventListener('change', showVideo);
+if (inputThumb) {
+    inputThumb.addEventListener('change', showThumbnail);
+}
+if (inputVideo) {
+    inputVideo.addEventListener('change', showVideo);
+}

@@ -1,11 +1,9 @@
 import fs from 'fs';
 import Video from '../models/Video';
 import Channel from '../models/Channel';
-import res from 'express/lib/response';
 
 export const home = async (req, res) => {
     const videos = await Video.find().populate('channel');
-    console.log(req.session);
     return res.render('watch/home', { videos });
 };
 

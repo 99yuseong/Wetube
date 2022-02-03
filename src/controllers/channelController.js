@@ -178,7 +178,6 @@ export const loginCompleteNaver = async (req, res) => {
             method: 'POST',
         })
     ).json();
-    console.log(tokenRequest);
 
     if ('access_token' in tokenRequest) {
         const { access_token, token_type } = tokenRequest;
@@ -350,6 +349,7 @@ export const showChannel = async (req, res) => {
         params: { id },
     } = req;
     const showingChannel = await Channel.findById(id).populate('videos');
+    console.log(showingChannel);
     return res.status(200).render('channel/channel', { showingChannel, id });
 };
 
