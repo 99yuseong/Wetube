@@ -24,6 +24,9 @@ section.watch-video {
                     padding: 0 8px;
                     button {
                         @include flex;
+                        a {
+                            @include flex;
+                        }
                         i {
                             padding: 6px;
                         }
