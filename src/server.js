@@ -30,8 +30,17 @@ app.use(
     })
 );
 app.use('/uploads', express.static('uploads'));
-app.use('/statics', express.static('statics'));
 app.use('/assets', express.static('assets'));
+app.use(
+    '/static',
+    express.static('static'),
+    express.static('node_modules/@ffmpeg/core/dist')
+);
+app.use((req, res, next) => {
+    res.header('Cross-Origin-Embedder-Policy', 'credentialless');
+    res.header('Cross-Origin-Opener-Policy', 'same-origin');
+    next();
+});
 app.use(flash());
 app.use(logger);
 app.use(localMiddleware);

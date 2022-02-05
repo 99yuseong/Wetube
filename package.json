@@ -18,6 +18,8 @@
     },
     "homepage": "https://github.com/99yuseong/Wetube#readme",
     "dependencies": {
+        "@ffmpeg/core": "^0.8.5",
+        "@ffmpeg/ffmpeg": "^0.9.7",
         "bcrypt": "^5.0.1",
         "connect-mongo": "^4.6.0",
         "dotenv": "^10.0.0",
