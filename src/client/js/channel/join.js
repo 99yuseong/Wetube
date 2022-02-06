@@ -124,7 +124,6 @@ const joinShowAvatar = () => {
 const joinValidCheck = (event) => {
     event.preventDefault();
     const required = joinForm.querySelectorAll('.invalid');
-    console.log(required);
     required.forEach((element) => {
         if (element.classList.contains('invalid') && element.value === '') {
             element.nextSibling.innerText = 'required';

@@ -349,7 +349,6 @@ export const showChannel = async (req, res) => {
         params: { id },
     } = req;
     const showingChannel = await Channel.findById(id).populate('videos');
-    console.log(showingChannel);
     return res.status(200).render('channel/channel', { showingChannel, id });
 };
 
