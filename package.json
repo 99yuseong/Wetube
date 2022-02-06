@@ -4,8 +4,12 @@
     "description": "Node JS, Express, MongoDB and ES6",
     "main": "src/init.js",
     "scripts": {
-        "dev": "nodemon",
-        "assets": "webpack"
+        "start": "node build/init.js",
+        "build": "npm run build:server && npm run build:assets",
+        "build:server": "babel src -d build --ignore src/client",
+        "build:assets": "webpack --mode=production",
+        "dev:server": "nodemon",
+        "dev:assets": "webpack --mode=development -w"
     },
     "repository": {
         "type": "git",
@@ -34,6 +38,7 @@
         "regenerator-runtime": "^0.13.9"
     },
     "devDependencies": {
+        "@babel/cli": "^7.17.0",
         "@babel/core": "^7.16.5",
         "@babel/node": "^7.16.5",
         "@babel/preset-env": "^7.16.5",

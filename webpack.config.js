@@ -21,9 +21,7 @@ module.exports = {
         path: path.resolve(__dirname, 'assets/statics'),
         clean: true,
     },
-    mode: 'development',
-    watch: true,
-    devtool: 'source-map',
+    // devtool: 'source-map',
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'css/style.css',
