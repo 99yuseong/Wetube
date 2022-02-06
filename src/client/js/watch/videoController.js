@@ -12,6 +12,7 @@ const currentTime = time.querySelector('.current-time');
 const duration = time.querySelector('.duration');
 const fullscreen = videoController.querySelector('.fullscreen');
 const fullscreenBtn = fullscreen.querySelector('i');
+const inputArray = document.querySelectorAll('input');
 
 let volume = 0.5;
 let controlsTimeout = null;
@@ -186,6 +187,13 @@ const handleKeyboard = (event) => {
     }
 };
 
+const focusInput = () => {
+    document.removeEventListener('keydown', handleKeyboard);
+};
+const blurInput = () => {
+    document.addEventListener('keydown', handleKeyboard);
+};
+
 if (video.readyState === 4) {
     handleLoadedMetaData();
 }
@@ -201,3 +209,5 @@ fullscreenBtn.addEventListener('click', handleFullscreen);
 videoPlayer.addEventListener('mousemove', handleMouseMove);
 videoPlayer.addEventListener('mouseleave', handleMouseLeave);
 document.addEventListener('keydown', handleKeyboard);
+inputArray.forEach((input) => input.addEventListener('focus', focusInput));
+inputArray.forEach((input) => input.addEventListener('blur', blurInput));

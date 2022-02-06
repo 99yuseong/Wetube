@@ -4,3 +4,7 @@ mixin avatar(channel)
 
 mixin avatar-noanchor(channel)
     img(src=`${channel.avatarUrl.startsWith("https") ? channel.avatarUrl : `/${channel.avatarUrl}`}`, alt=`${channel.name}의 avatar image`).avatar-noanchor-img
+
+mixin avatar-noModel(_id, name, avatarUrl)
+    a(href=`/channel/${_id}`)
+        img(src=`${avatarUrl.startsWith("https") ? avatarUrl : `/${avatarUrl}`}`, alt=`${name}의 avatar image`).avatar-img

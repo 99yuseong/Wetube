@@ -1,0 +1,80 @@
+.comment-container {
+    margin: 24px 0 32px;
+    @include flex-column(center, flex-start);
+    div.comment-count {
+        margin-bottom: 24px;
+    }
+}
+
+div.comment-input-container {
+    width: 100%;
+    @include flex(center, flex-start);
+    .avatar-noanchor-img {
+        @include avatar(comment);
+        margin-right: 16px;
+    }
+}
+
+#comment-form {
+    @include flex-column();
+    flex-grow: 1;
+    .comment-input {
+        background-color: $black;
+        padding: 0 0 6px 0;
+        border-radius: 0;
+        border-bottom: 1.5px solid $border;
+        transition: border-bottom 200ms ease-in-out;
+        color: $white;
+        &:focus {
+            border-bottom: 1.5px solid $white;
+        }
+    }
+    .comment-button-container {
+        width: 100%;
+        padding-top: 8px;
+        @include flex(flex-end, center);
+        button {
+            width: auto;
+            padding: 10px 16px;
+            margin: 0 0 0 8px;
+        }
+        .cancel-btn {
+            background-color: transparent;
+        }
+        .comment-btn {
+            background-color: $blue;
+        }
+        .comment-btn.disabled {
+            background-color: $background;
+            cursor: auto;
+        }
+        .hide {
+            opacity: 0;
+        }
+    }
+}
+
+ul.comment-list {
+    li {
+        @include flex(flex-start, center);
+        margin-bottom: 16px;
+    }
+
+    .avatar-img {
+        @include avatar(comment);
+        margin-right: 16px;
+    }
+    div {
+        flex-grow: 1;
+        span {
+            @include flex(flex-start, center);
+        }
+        strong {
+            margin: 0 4px 2px 0;
+            font-weight: normal;
+        }
+        small {
+            color: $gray;
+        }
+    }
+}

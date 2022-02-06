@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -12,18 +12,19 @@ const videoSchema = new mongoose.Schema({
     },
     videoUrl: { type: String, required: true },
     thumbUrl: { type: String, required: true },
-    channel: { type: mongoose.Schema.Types.ObjectId, ref: "Channel" },
+    channel: { type: mongoose.Schema.Types.ObjectId, ref: 'Channel' },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
-videoSchema.static("formatHashtag", function (hashtags) {
+videoSchema.static('formatHashtag', function (hashtags) {
     return hashtags
-        .split(",")
+        .split(',')
         .map((hashtag) =>
-            hashtag.trim().startsWith("#")
+            hashtag.trim().startsWith('#')
                 ? hashtag.trim()
-                : "#" + hashtag.trim()
+                : '#' + hashtag.trim()
         );
 });
 
-const Video = mongoose.model("Video", videoSchema);
+const Video = mongoose.model('Video', videoSchema);
 export default Video;

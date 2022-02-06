@@ -15,7 +15,11 @@ import {
 const watch = express.Router();
 
 watch.route('/:id').get(watchVideo);
-watch.route('/:id/api/:section').all(protectMiddlware).get(watchApi);
+watch
+    .route('/:id/api/:section')
+    .all(protectMiddlware)
+    .get(watchApi)
+    .post(watchApi);
 watch
     .route('/:id/edit')
     .all(protectMiddlware, videoOwnerMiddleware)

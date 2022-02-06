@@ -14,6 +14,7 @@ module.exports = {
         watch_thumbnail: `${url}/watch/thumbnail.js`,
         watch_recorder: `${url}/watch/recorder.js`,
         watch_videoController: `${url}/watch/videoController.js`,
+        watch_comment: `${url}/watch/comment.js`,
     },
     output: {
         filename: 'js/[name].js',

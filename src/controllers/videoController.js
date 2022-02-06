@@ -1,6 +1,7 @@
 import fs from 'fs';
 import Video from '../models/Video';
 import Channel from '../models/Channel';
+import Comment from '../models/Comment';
 
 export const home = async (req, res) => {
     const videos = await Video.find().populate('channel');
@@ -132,7 +133,9 @@ export const watchVideo = async (req, res) => {
         session: { channel },
     } = req;
 
-    const video = await Video.findById(id).populate('channel');
+    const video = await Video.findById(id)
+        .populate('channel')
+        .populate('comments');
     if (!video) {
         return res.status(404).render('base/404');
     }
@@ -236,5 +239,48 @@ export const watchApi = async (req, res) => {
         }
         req.session.channel = await user.save();
         return res.json({ saved: savedBoolean });
+    }
+
+    if (section === 'addComment') {
+        const {
+            body: { comment },
+        } = req;
+
+        const newComment = await Comment.create({
+            comment,
+            channel: user._id,
+            name: user.name,
+            avatarUrl: user.avatarUrl,
+            video: video._id,
+        });
+        user.comments.push(newComment._id);
+        user.save();
+        video.comments.push(newComment._id);
+        video.save();
+        return res.json({ newComment });
+    }
+
+    if (section === 'delComment') {
+        const {
+            body: { deletingComment },
+        } = req;
+
+        const comment = await Comment.findByIdAndDelete(deletingComment);
+        const commentChannel = await Channel.findById(comment.channel);
+
+        // delete comment id in Channel data
+        const channelCommentIndex = commentChannel.comments.findIndex(
+            (element) => element.valueOf() === deletingComment
+        );
+        commentChannel.comments.splice(channelCommentIndex, 1);
+        commentChannel.save();
+
+        // delete comment id in video data
+        const videoCommentIndex = video.comments.findIndex(
+            (element) => element.valueOf() === deletingComment
+        );
+        video.comments.splice(videoCommentIndex, 1);
+        video.save();
+        return res.sendStatus(200);
     }
 };

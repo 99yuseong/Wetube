@@ -24,6 +24,7 @@ const channelSchema = new mongoose.Schema({
     liked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
     disliked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
     library: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 channelSchema.static('pwHash', async function (password) {

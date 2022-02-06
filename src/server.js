@@ -41,6 +41,7 @@ app.use((req, res, next) => {
     res.header('Cross-Origin-Opener-Policy', 'same-origin');
     next();
 });
+app.use(express.json());
 app.use(flash());
 app.use(logger);
 app.use(localMiddleware);

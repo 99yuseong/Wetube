@@ -92,13 +92,35 @@ block content
 
         //- comments
         section.watch-comment
-            if loggedIn
-                +avatar-noanchor(channel)
-                form(method="POST")
-                    textarea(name="comment", placeholder="Add a public comment...", required)
-                    button(type="button") Cancel
-                    button(type="submit") Comment
+            div.comment-container
+                div.comment-count
+                    span.count #{video.comments.length}
+                    span  
+                    span.count-unit #{video.comments.length > 1 ? 'Comments' : 'Comment'}
+                if loggedIn
+                    div.comment-input-container
+                        +avatar-noanchor(channel)
+                        form#comment-form
+                            input(type="text", name="comment", placeholder="Add a public comment...", required).comment-input
+                            div.comment-button-container
+                                button(type="button").cancel-btn.hide Cancel
+                                button(type="button", disabled).comment-btn.disabled.hide Comment
+            ul.comment-list
+                for comment in video.comments
+                    li(id=`${comment._id}`)
+                        +avatar-noModel(comment.channel, comment.name, comment.avatarUrl)
+                        div
+                            span
+                                strong #{comment.name}
+                                +date(comment.createdAt)
+                            p #{comment.comment}
+                        if comment.channel._id.valueOf() === channel._id.valueOf() || channel._id === video.channel._id.valueOf()
+                            button.del-comment ❌
+
+
 block scripts
     script(src="/assets/statics/js/watch_videoController.js") 
     script(src="/assets/statics/js/channel_subscribe.js")
     script(src="/assets/statics/js/watch_watch.js")
+    if loggedIn
+        script(src="/assets/statics/js/watch_comment.js")

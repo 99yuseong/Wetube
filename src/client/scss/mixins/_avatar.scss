@@ -13,6 +13,10 @@
         width: 36px;
         height: 36px;
     }
+    @if ($location == 'comment') {
+        width: 40px;
+        height: 40px;
+    }
     @if ($location == 'watch') {
         width: 48px;
         height: 48px;
