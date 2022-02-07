@@ -25,8 +25,8 @@ export const upload = async (req, res) => {
             title,
             description,
             hashtag: Video.formatHashtag(hashtag),
-            videoUrl: files.video[0].path,
-            thumbUrl: files.thumbnail[0].path,
+            videoUrl: files.video[0].location,
+            thumbUrl: files.thumbnail[0].location,
             channel: id,
         });
         // DB
@@ -66,7 +66,7 @@ export const edit = async (req, res) => {
                 videoUrl: channel.tempReupload
                     ? channel.tempReupload
                     : video.videoUrl,
-                thumbUrl: file ? file.path : video.thumbUrl,
+                thumbUrl: file ? file.location : video.thumbUrl,
             },
             {
                 new: true,
@@ -99,7 +99,7 @@ export const reuploadVideo = async (req, res) => {
     }
     if (req.method === 'POST') {
         const { file } = req;
-        channel.tempReupload = file.path;
+        channel.tempReupload = file.location;
         return res.status(201).redirect(`/watch/${id}/edit`);
     }
 };

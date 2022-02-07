@@ -6,7 +6,7 @@ mixin video(videos)
             li
                 a(href=`/watch/${video._id}`).video-anchor
                     div.thumb
-                        img(src=`/${video.thumbUrl}`)
+                        img(src=`${video.thumbUrl}`)
                         //- video(src=`/${video.videoUrl}`, controls) 
                     div.video-data
                         if showingChannel

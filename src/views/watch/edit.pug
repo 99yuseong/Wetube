@@ -8,7 +8,7 @@ block content
                     h1
                         strong Edit Video
                 div.video-upload.video-player
-                    video(src=`/${channel.tempReupload
+                    video(src=`${channel.tempReupload
                                     ? channel.tempReupload
                                     : video.videoUrl}`).video
                     div.video-controller
@@ -33,7 +33,7 @@ block content
                 div.edit-content
                     div.edit-thumbnail
                         div.thumb
-                            img(src=`/${video.thumbUrl}`, alt=`${video.title}'s thumbnail`).img-thumbnail
+                            img(src=`${video.thumbUrl}`, alt=`${video.title}'s thumbnail`).img-thumbnail
                         h3
                             label(for="thumbnail") Thumbnail File
                         input(type="file", name="thumbnail", accept="image/*", id="thumbnail").input-thumbnail

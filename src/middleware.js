@@ -1,4 +1,6 @@
 import multer from 'multer';
+import multerS3 from 'multer-s3';
+import aws from 'aws-sdk';
 
 export const localMiddleware = (req, res, next) => {
     res.locals.channel = req.session.channel;
@@ -62,33 +64,36 @@ export const socialOnlyPreventMiddleware = (req, res, next) => {
     return res.redirect('/');
 };
 
-const avatarStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/avatars');
-    },
-    filename: (req, file, cb) => {
-        cb(null, '/' + file.originalname + '-' + Date.now());
+const s3 = new aws.S3({
+    credentials: {
+        accessKeyId: process.env.AWS_ID,
+        secretAccessKey: process.env.AWS_SECRET,
     },
 });
 
-const videoStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads');
-    },
-    filename: (req, file, cb) => {
+const multerUploader = multerS3({
+    s3: s3,
+    bucket: 'project-wetube',
+    acl: 'public-read',
+    key: (req, file, cb) => {
         if (file.fieldname === 'video') {
-            cb(null, `/videos/${file.originalname} - ${Date.now()}`);
+            cb(null, `videos/${file.originalname} - ${Date.now()}`);
         }
         if (file.fieldname === 'thumbnail') {
-            cb(null, `/thumbnails/${file.originalname} - ${Date.now()}`);
+            cb(null, `thumbnails/${file.originalname} - ${Date.now()}`);
+        }
+        if (file.fieldname === 'avatar') {
+            cb(null, `avatars/${file.originalname} - ${Date.now()}`);
         }
     },
 });
 
 export const avatarUpload = multer({
-    storage: avatarStorage,
+    dest: 'uploads/',
+    storage: multerUploader,
 });
 
 export const videoUpload = multer({
-    storage: videoStorage,
+    dest: 'uploads/',
+    storage: multerUploader,
 });

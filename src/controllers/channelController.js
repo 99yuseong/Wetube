@@ -45,7 +45,9 @@ export const join = async (req, res) => {
             email,
             password: await Channel.pwHash(password),
             name,
-            avatarUrl: file ? file.path : 'uploads/avatars/Default Avatar.png',
+            avatarUrl: file
+                ? file.location
+                : '/assets/images/Default Avatar.png',
             description,
         });
         req.flash('success', 'Successfully Joined! Please login');
@@ -252,7 +254,6 @@ export const edit = async (req, res) => {
             body: { name, description },
             file,
         } = req;
-
         const nameExists = await Channel.findOne({ name });
         if (nameExists && id !== nameExists._id.valueOf()) {
             req.flash('error', 'Channel name already Exists');
@@ -264,16 +265,13 @@ export const edit = async (req, res) => {
             {
                 name,
                 description,
-                avatarUrl: file ? file.path : channel.avatarUrl,
+                avatarUrl: file ? file.location : channel.avatarUrl,
             },
             { new: true }
         ).populate('subscription');
 
         req.session.channel = editedChannel;
-        if (
-            file &&
-            channel.avatarUrl !== 'uploads/avatars/Default Avatar.png'
-        ) {
+        if (file && channel.avatarUrl !== '/assets/images/Default Avatar.png') {
             fs.rm(`${channel.avatarUrl}`, (err) => {
                 console.log(err);
             });
@@ -371,7 +369,7 @@ export const remove = async (req, res) => {
 
         const delChannel = await Channel.findByIdAndDelete(id);
 
-        if (delChannel.avatarUrl !== 'uploads/avatars/Default Avatar.png') {
+        if (delChannel.avatarUrl !== '/assets/images/Default Avatar.png') {
             fs.rm(`${channel.avatarUrl}`, (err) => {
                 console.log('avatarUrl' + err);
             });
