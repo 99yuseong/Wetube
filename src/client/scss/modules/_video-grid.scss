@@ -66,6 +66,13 @@ section.video-grid {
     }
 }
 
+.channel-uploads {
+    margin-top: 8px;
+    .video-mixin.horizontal {
+        padding: 0;
+    }
+}
+
 .video-mixin.vertical {
     @include flex-column(flex-start, center);
     li {
