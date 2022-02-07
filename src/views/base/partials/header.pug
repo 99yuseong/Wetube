@@ -9,7 +9,10 @@ header.header-container
 
     div.header-center-section
         form(method="GET", action="/search").header-form
-            input(type="text", name="keyword", placeholder="Search")
+            if keyword
+                input(type="text", name="keyword", placeholder="Search", value=`${keyword}`)
+            else
+                input(type="text", name="keyword", placeholder="Search")
             button(type="submit")
                 i.ic-search
 

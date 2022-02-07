@@ -114,7 +114,7 @@ block content
                                     strong #{comment.name}
                                     +date(comment.createdAt)
                                 p #{comment.comment}
-                            if comment.channel._id.valueOf() === channel._id.valueOf() || channel._id === video.channel._id.valueOf()
+                            if channel && (comment.channel._id.valueOf() === channel._id.valueOf() || channel._id === video.channel._id.valueOf())
                                 button.del-comment ❌
         div.video-list
             +video-vertical(videos)  

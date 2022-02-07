@@ -165,6 +165,7 @@ export const search = async (req, res) => {
         title: { $regex: new RegExp(`${keyword}`, 'i') },
     }).populate('channel');
     return res.render('watch/home', {
+        keyword,
         videos: searchedVideo,
         pageTitle: `Search - ${keyword}`,
     });
