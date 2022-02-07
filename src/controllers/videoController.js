@@ -145,6 +145,7 @@ export const watchVideo = async (req, res) => {
         session: { channel },
     } = req;
 
+    const videos = await Video.find();
     const video = await Video.findById(id)
         .populate('channel')
         .populate('comments');
@@ -153,7 +154,7 @@ export const watchVideo = async (req, res) => {
     }
     return res
         .status(200)
-        .render('watch/watch', { video, pageTitle: `${video.title}` });
+        .render('watch/watch', { videos, video, pageTitle: `${video.title}` });
 };
 
 export const search = async (req, res) => {
@@ -209,12 +210,10 @@ export const showYourVideos = async (req, res) => {
         myVideos.push(myVideo);
     }
 
-    return res
-        .status(200)
-        .render('feed/yourVideo', {
-            videos: myVideos,
-            pageTitle: 'Your Videos',
-        });
+    return res.status(200).render('feed/yourVideo', {
+        videos: myVideos,
+        pageTitle: 'Your Videos',
+    });
 };
 
 export const showLiked = async (req, res) => {

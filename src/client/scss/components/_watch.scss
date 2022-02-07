@@ -1,6 +1,16 @@
-article.watch {
-    width: 100%;
-    padding: 24px 3%;
+article {
+    @include flex(center, flex-start);
+    margin: 32px 64px;
+}
+
+div.video-list {
+    li {
+        width: 30%;
+    }
+}
+
+div.watch {
+    width: 70%;
 }
 
 section.watch-video {

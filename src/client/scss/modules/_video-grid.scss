@@ -95,8 +95,4 @@ section.video-grid {
     a {
         @include flex(flex-start, flex-start);
     }
-    p {
-        font-size: 12px;
-        margin-top: 8px;
-    }
 }

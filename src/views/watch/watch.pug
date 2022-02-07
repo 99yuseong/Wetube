@@ -2,121 +2,122 @@ extends ../base/layout
 include ../base/mixins/avatar
 include ../base/mixins/subscriptions
 include ../base/mixins/date
+include ../base/mixins/video
 block content
-    article.watch
-        section.watch-video
-            div.video-player
-                video(src=`${video.videoUrl}`)
-                div.video-controller
-                    input(type="range", step="0.05", value="0", min="0").time-line
-                    div.controller-container
-                        div.controller-left
-                            button(type="button").play
-                                i.ic-play
-                            button(type="button").mute
-                                i.ic-high-volume
-                            input(type="range", step="0.05", min="0", max="1").volume
-                            div.time 
-                                span.current-time 00:00
-                                span /
-                                span.duration 00:00
-                        div.controller-right
-                            button.fullscreen
-                                i.ic-fullscreen
-            header.watch-video-data
-                div.watch-title
-                    each hashtag in video.hashtag
-                        small #{hashtag}  
-                    h1 #{video.title}
-                div.watch-meta
-                    div.watch-meta-data
-                        small.views #{video.meta.views} 
-                        small #{video.meta.views < 2 ? "view" : "views"}
-                        span ㆍ
-                        +date(video.meta.createdAt)
-                    div.watch-meta-button
-                        ul
-                            li
-                                button.liked-button
-                                    if !channel
-                                        a(href="/login")
+    article
+        div.watch
+            section.watch-video
+                div.video-player
+                    video(src=`${video.videoUrl}`)
+                    div.video-controller
+                        input(type="range", step="0.05", value="0", min="0").time-line
+                        div.controller-container
+                            div.controller-left
+                                button(type="button").play
+                                    i.ic-play
+                                button(type="button").mute
+                                    i.ic-high-volume
+                                input(type="range", step="0.05", min="0", max="1").volume
+                                div.time 
+                                    span.current-time 00:00
+                                    span /
+                                    span.duration 00:00
+                            div.controller-right
+                                button.fullscreen
+                                    i.ic-fullscreen
+                header.watch-video-data
+                    div.watch-title
+                        each hashtag in video.hashtag
+                            small #{hashtag}  
+                        h1 #{video.title}
+                    div.watch-meta
+                        div.watch-meta-data
+                            small.views #{video.meta.views} 
+                            small #{video.meta.views < 2 ? "view" : "views"}
+                            span ㆍ
+                            +date(video.meta.createdAt)
+                        div.watch-meta-button
+                            ul
+                                li
+                                    button.liked-button
+                                        if !channel
+                                            a(href="/login")
+                                                i.ic-liked
+                                                strong #{video.meta.liked}
+                                        else if channel.liked.includes(video._id.valueOf())
+                                            i.ic-liked-fill
+                                            strong #{video.meta.liked} 
+                                        else
                                             i.ic-liked
-                                            strong #{video.meta.liked}
-                                    else if channel.liked.includes(video._id.valueOf())
-                                        i.ic-liked-fill
-                                        strong #{video.meta.liked} 
-                                    else
-                                        i.ic-liked
-                                        strong #{video.meta.liked === 0 ? 'like' : video.meta.liked}
-                            li
-                                button.disliked-button
-                                    if !channel
-                                        a(href="/login")
+                                            strong #{video.meta.liked === 0 ? 'like' : video.meta.liked}
+                                li
+                                    button.disliked-button
+                                        if !channel
+                                            a(href="/login")
+                                                i.ic-disliked
+                                                strong #{video.meta.disliked}         
+                                        else if channel.disliked.includes(video._id.valueOf())
+                                            i.ic-disliked-fill 
+                                            strong #{video.meta.disliked} 
+                                        else
                                             i.ic-disliked
-                                            strong #{video.meta.disliked}         
-                                    else if channel.disliked.includes(video._id.valueOf())
-                                        i.ic-disliked-fill 
-                                        strong #{video.meta.disliked} 
-                                    else
-                                        i.ic-disliked
-                                        strong #{video.meta.disliked === 0 ? 'dislike' : video.meta.disliked}
-                            li
-                                button.save-button
-                                    if !channel
-                                        a(href="/login")
+                                            strong #{video.meta.disliked === 0 ? 'dislike' : video.meta.disliked}
+                                li
+                                    button.save-button
+                                        if !channel
+                                            a(href="/login")
+                                                i.ic-save
+                                                strong save
+                                        else
                                             i.ic-save
-                                            strong save
-                                    else
-                                        i.ic-save
-                                        strong #{channel.library.includes(video._id.valueOf()) ? 'Unsave' : 'save'}
-        section.watch-channel
-            header
-                div.channel-avatar-title
-                    div.channel-avatar
-                        +avatar(video.channel)
-                    div.channel-title
-                        h3 #{video.channel.name}
-                        small.subscribers #{video.channel.subscribed}
-                        small  #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
-                div.channel-subscription
-                    if !channel
-                        button(type="button") 
-                            a(href=`/login`) Subscribe
-                    else if channel._id === video.channel._id.valueOf()
-                        button(type="button") 
-                            a(href=`/watch/${video._id}/edit`) Edit Video
-                    else
-                        +subscribedButton(video.channel)
-            div.channel-video-description
-                p #{video.description}
-
-        //- comments
-        section.watch-comment
-            div.comment-container
-                div.comment-count
-                    span.count #{video.comments.length}
-                    span  
-                    span.count-unit #{video.comments.length > 1 ? 'Comments' : 'Comment'}
-                if loggedIn
-                    div.comment-input-container
-                        +avatar-noanchor(channel)
-                        form#comment-form
-                            input(type="text", name="comment", placeholder="Add a public comment...", required).comment-input
-                            div.comment-button-container
-                                button(type="button").cancel-btn.hide Cancel
-                                button(type="button", disabled).comment-btn.disabled.hide Comment
-            ul.comment-list
-                for comment in video.comments
-                    li(id=`${comment._id}`)
-                        +avatar-noModel(comment.channel, comment.name, comment.avatarUrl)
-                        div
-                            span
-                                strong #{comment.name}
-                                +date(comment.createdAt)
-                            p #{comment.comment}
-                        if comment.channel._id.valueOf() === channel._id.valueOf() || channel._id === video.channel._id.valueOf()
-                            button.del-comment ❌
-
+                                            strong #{channel.library.includes(video._id.valueOf()) ? 'Unsave' : 'save'}
+            section.watch-channel
+                header
+                    div.channel-avatar-title
+                        div.channel-avatar
+                            +avatar(video.channel)
+                        div.channel-title
+                            h3 #{video.channel.name}
+                            small.subscribers #{video.channel.subscribed}
+                            small  #{video.channel.subscribed < 2 ? "subscriber" : "subscribers" }
+                    div.channel-subscription
+                        if !channel
+                            button(type="button") 
+                                a(href=`/login`) Subscribe
+                        else if channel._id === video.channel._id.valueOf()
+                            button(type="button") 
+                                a(href=`/watch/${video._id}/edit`) Edit Video
+                        else
+                            +subscribedButton(video.channel)
+                div.channel-video-description
+                    p #{video.description}
+            section.watch-comment
+                div.comment-container
+                    div.comment-count
+                        span.count #{video.comments.length}
+                        span  
+                        span.count-unit #{video.comments.length > 1 ? 'Comments' : 'Comment'}
+                    if loggedIn
+                        div.comment-input-container
+                            +avatar-noanchor(channel)
+                            form#comment-form
+                                input(type="text", name="comment", placeholder="Add a public comment...", required).comment-input
+                                div.comment-button-container
+                                    button(type="button").cancel-btn.hide Cancel
+                                    button(type="button", disabled).comment-btn.disabled.hide Comment
+                ul.comment-list
+                    for comment in video.comments
+                        li(id=`${comment._id}`)
+                            +avatar-noModel(comment.channel, comment.name, comment.avatarUrl)
+                            div
+                                span
+                                    strong #{comment.name}
+                                    +date(comment.createdAt)
+                                p #{comment.comment}
+                            if comment.channel._id.valueOf() === channel._id.valueOf() || channel._id === video.channel._id.valueOf()
+                                button.del-comment ❌
+        div.video-list
+            +video-vertical(videos)  
 
 block scripts
     script(src="/assets/statics/js/watch_videoController.js") 
