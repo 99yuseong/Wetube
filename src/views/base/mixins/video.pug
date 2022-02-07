@@ -1,13 +1,12 @@
 include ./avatar
 include ./date
 mixin video(videos)     
-    ul.video-mixin
+    ul.video-mixin.horizontal
         each video in videos
             li
                 a(href=`/watch/${video._id}`).video-anchor
                     div.thumb
                         img(src=`${video.thumbUrl}`)
-                        //- video(src=`/${video.videoUrl}`, controls) 
                     div.video-data
                         if showingChannel
                             +avatar-noanchor(showingChannel)
@@ -21,5 +20,27 @@ mixin video(videos)
                                     small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
                                     span ㆍ
                                     +date(video.meta.createdAt)
+        else
+            span Sorry, nothing found
+
+mixin video-vertical(videos)     
+    ul.video-mixin.vertical
+        each video in videos
+            li
+                a(href=`/watch/${video._id}`).video-anchor
+                    div.thumb.vertical
+                        img(src=`${video.thumbUrl}`)
+                    div.video-data
+                        div.video-data-text
+                            h3 #{video.title}
+                            div.video-data-text-meta
+                                div
+                                    small #{video.channel.name}
+                                    span ㆍ
+                                    small #{video.meta.views} #{video.meta.views > 1 ? "views" : "view" } 
+                                    span ㆍ
+                                    +date(video.meta.createdAt)
+                                each hashtag in video.hashtag
+                                    small #{hashtag}
         else
             span Sorry, nothing found

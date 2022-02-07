@@ -5,7 +5,7 @@ import Channel from '../models/Channel';
 
 export const join = async (req, res) => {
     if (req.method === 'GET') {
-        return res.render('channel/join');
+        return res.render('channel/join', { pageTitle: 'Join' });
     }
 
     if (req.method === 'POST') {
@@ -14,39 +14,15 @@ export const join = async (req, res) => {
             file,
         } = req;
 
-        // const emailCheck = await Channel.findOne({
-        //     email,
-        // });
-        // if (emailCheck) {
-        //     if (channel.socialOnly && channel.socialLogin === 'Github') {
-        //         req.flash('error', 'You already joined with Github');
-        //         return res.status(400).redirect('/login');
-        //     }
-        //     if (channel.socialOnly && channel.socialLogin === 'Naver') {
-        //         req.flash('error', 'You already joined with Naver');
-        //         return res.status(400).redirect('/login');
-        //     }
-        //     req.flash('error', 'Email is already taken');
-        //     return res.status(400).redirect('/join');
-        // }
-
-        // const nameCheck = await Channel.exists({ name });
-        // if (nameCheck) {
-        //     req.flash('error', 'Channel name is already taken');
-        //     return res.status(400).redirect('/join');
-        // }
-
-        // if (password !== password2) {
-        //     req.flash('error', 'Password confirmation error');
-        //     return res.status(400).redirect('/join');
-        // }
-
+        const isHeroku = process.env.NODE_ENV === 'production';
         await Channel.create({
             email,
             password: await Channel.pwHash(password),
             name,
             avatarUrl: file
-                ? file.location
+                ? isHeroku
+                    ? file.location
+                    : file.path
                 : '/assets/images/Default Avatar.png',
             description,
         });
@@ -213,7 +189,7 @@ export const loginCompleteNaver = async (req, res) => {
 
 export const login = async (req, res) => {
     if (req.method === 'GET') {
-        return res.status(200).render('channel/login');
+        return res.status(200).render('channel/login', { pageTitle: 'Login' });
     }
     if (req.method === 'POST') {
         const {
@@ -246,7 +222,10 @@ export const edit = async (req, res) => {
     } = req;
 
     if (req.method === 'GET') {
-        return res.status(200).render('channel/edit', { channel });
+        return res.status(200).render('channel/edit', {
+            channel,
+            pageTitle: `Edit - ${channel.name}`,
+        });
     }
 
     if (req.method === 'POST') {
@@ -259,13 +238,17 @@ export const edit = async (req, res) => {
             req.flash('error', 'Channel name already Exists');
             return res.status(400).redirect('edit');
         }
-
+        const isHeroku = process.env.NODE_ENV === 'production';
         const editedChannel = await Channel.findByIdAndUpdate(
             id,
             {
                 name,
                 description,
-                avatarUrl: file ? file.location : channel.avatarUrl,
+                avatarUrl: file
+                    ? isHeroku
+                        ? file.location
+                        : file.path
+                    : channel.avatarUrl,
             },
             { new: true }
         ).populate('subscription');
@@ -300,7 +283,9 @@ export const changePassword = async (req, res) => {
         session: { channel },
     } = req;
     if (req.method === 'GET') {
-        return res.status(200).render('channel/changePassword');
+        return res
+            .status(200)
+            .render('channel/changePassword', { pageTitle: 'Change-password' });
     }
     if (req.method === 'POST') {
         const {
@@ -347,7 +332,11 @@ export const showChannel = async (req, res) => {
         params: { id },
     } = req;
     const showingChannel = await Channel.findById(id).populate('videos');
-    return res.status(200).render('channel/channel', { showingChannel, id });
+    return res.status(200).render('channel/channel', {
+        showingChannel,
+        id,
+        pageTitle: `${showingChannel.name}`,
+    });
 };
 
 export const remove = async (req, res) => {
@@ -356,7 +345,9 @@ export const remove = async (req, res) => {
         session: { channel },
     } = req;
     if (req.method === 'GET') {
-        return res.status(200).render('channel/remove');
+        return res
+            .status(200)
+            .render('channel/remove', { pageTitle: `Delete ${channel.name}` });
     }
     if (req.method === 'POST') {
         const {
@@ -441,13 +432,23 @@ export const subscribe = async (req, res) => {
 export const showSubscriptions = async (req, res) => {
     const {
         session: {
-            channel: { suscription },
+            channel: { subscription },
         },
     } = req;
 
     let videos = [];
-    // subscription array > name find
-    // const subscriptions = await Channel.find({ name });
 
-    return res.status(200).render('feed/subscriptions', { videos });
+    for (let element of subscription) {
+        const subscribed = await Channel.findById(element._id);
+        for (let video of subscribed.videos) {
+            const subscribedVideos = await Video.findById(video).populate(
+                'channel'
+            );
+            videos.push(subscribedVideos);
+        }
+    }
+    return res.status(200).render('feed/subscriptions', {
+        videos,
+        pageTitle: 'Subscriptions',
+    });
 };

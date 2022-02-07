@@ -19,7 +19,7 @@ const showSubscriptionAtNav = (subscribed, _id, name, avatarUrl) => {
         a.appendChild(img);
         a.appendChild(span);
         li.appendChild(a);
-        navsubscription.prepend(li);
+        navsubscription.appendChild(li);
     } else {
         const unsubscribedChannel = document.getElementById(_id);
         unsubscribedChannel.remove();

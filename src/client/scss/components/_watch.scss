@@ -11,6 +11,9 @@ section.watch-video {
             small {
                 color: $blue;
             }
+            h1 {
+                margin-top: 8px;
+            }
         }
 
         .watch-meta {
@@ -69,6 +72,7 @@ section.watch-channel {
         }
     }
     div.channel-video-description {
+        margin-top: 24px;
         margin-left: 64px;
     }
 }

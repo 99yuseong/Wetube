@@ -5,7 +5,7 @@ import Comment from '../models/Comment';
 
 export const home = async (req, res) => {
     const videos = await Video.find().populate('channel');
-    return res.render('watch/home', { videos });
+    return res.render('watch/home', { videos, pageTitle: 'Youtube' });
 };
 
 export const upload = async (req, res) => {
@@ -13,20 +13,24 @@ export const upload = async (req, res) => {
         params: { id },
     } = req;
     if (req.method === 'GET') {
-        return res.status(200).render('channel/upload');
+        return res
+            .status(200)
+            .render('channel/upload', { pageTitle: 'Upload' });
     }
     if (req.method === 'POST') {
         const {
             body: { title, description, hashtag },
             files,
         } = req;
-
+        const isHeroku = process.env.NODE_ENV === 'production';
         const video = await Video.create({
             title,
             description,
             hashtag: Video.formatHashtag(hashtag),
-            videoUrl: files.video[0].location,
-            thumbUrl: files.thumbnail[0].location,
+            videoUrl: isHeroku ? files.video[0].location : files.video[0].path,
+            thumbUrl: isHeroku
+                ? files.thumbnail[0].location
+                : files.thumbnail[0].path,
             channel: id,
         });
         // DB
@@ -48,7 +52,9 @@ export const edit = async (req, res) => {
     const video = await Video.findById(id);
 
     if (req.method === 'GET') {
-        return res.status(200).render('watch/edit', { video });
+        return res
+            .status(200)
+            .render('watch/edit', { video, pageTitle: 'Upload' });
     }
 
     if (req.method === 'POST') {
@@ -56,7 +62,7 @@ export const edit = async (req, res) => {
             body: { title, description, hashtag },
             file,
         } = req;
-
+        const isHeroku = process.env.NODE_ENV === 'production';
         const editedVideo = await Video.findByIdAndUpdate(
             id,
             {
@@ -66,7 +72,11 @@ export const edit = async (req, res) => {
                 videoUrl: channel.tempReupload
                     ? channel.tempReupload
                     : video.videoUrl,
-                thumbUrl: file ? file.location : video.thumbUrl,
+                thumbUrl: file
+                    ? isHeroku
+                        ? file.location
+                        : file.path
+                    : video.thumbUrl,
             },
             {
                 new: true,
@@ -95,11 +105,13 @@ export const reuploadVideo = async (req, res) => {
     } = req;
     const video = await Video.findById(id);
     if (req.method === 'GET') {
-        return res.status(200).render('watch/reupload', { video });
+        return res
+            .status(200)
+            .render('watch/reupload', { video, pageTitle: 'Reupload' });
     }
     if (req.method === 'POST') {
         const { file } = req;
-        channel.tempReupload = file.location;
+        channel.tempReupload = file.path;
         return res.status(201).redirect(`/watch/${id}/edit`);
     }
 };
@@ -139,7 +151,9 @@ export const watchVideo = async (req, res) => {
     if (!video) {
         return res.status(404).render('base/404');
     }
-    return res.status(200).render('watch/watch', { video });
+    return res
+        .status(200)
+        .render('watch/watch', { video, pageTitle: `${video.title}` });
 };
 
 export const search = async (req, res) => {
@@ -148,19 +162,21 @@ export const search = async (req, res) => {
     } = req;
     const searchedVideo = await Video.find({
         title: { $regex: new RegExp(`${keyword}`, 'i') },
+    }).populate('channel');
+    return res.render('watch/home', {
+        videos: searchedVideo,
+        pageTitle: `Search - ${keyword}`,
     });
-    return res.render('watch/home', { videos: searchedVideo });
 };
 
-export const explore = (req, res) => {
-    let videos = [];
-    // subscription array > name find
-    // const subscriptions = await Channel.find({ name });
-
-    return res.status(200).render('feed/explore', { videos });
+export const explore = async (req, res) => {
+    const videos = await Video.find().populate('channel');
+    return res
+        .status(200)
+        .render('feed/explore', { videos, pageTitle: 'Explore' });
 };
 
-export const showLibrary = (req, res) => {
+export const showLibrary = async (req, res) => {
     const {
         session: {
             channel: { library },
@@ -168,10 +184,56 @@ export const showLibrary = (req, res) => {
     } = req;
 
     let videos = [];
-    // library array > name find
-    // const library = await Channel.find({ name });
 
-    return res.status(200).render('feed/library', { videos });
+    for (let element of library) {
+        const savedVideo = await Video.findById(element).populate('channel');
+        videos.push(savedVideo);
+    }
+
+    return res
+        .status(200)
+        .render('feed/library', { videos, pageTitle: 'Library' });
+};
+
+export const showYourVideos = async (req, res) => {
+    const {
+        session: {
+            channel: { videos },
+        },
+    } = req;
+
+    let myVideos = [];
+
+    for (let element of videos) {
+        const myVideo = await Video.findById(element).populate('channel');
+        myVideos.push(myVideo);
+    }
+
+    return res
+        .status(200)
+        .render('feed/yourVideo', {
+            videos: myVideos,
+            pageTitle: 'Your Videos',
+        });
+};
+
+export const showLiked = async (req, res) => {
+    const {
+        session: {
+            channel: { liked },
+        },
+    } = req;
+
+    let videos = [];
+
+    for (let element of liked) {
+        const likedVideo = await Video.findById(element).populate('channel');
+        videos.push(likedVideo);
+    }
+
+    return res
+        .status(200)
+        .render('feed/liked', { videos, pageTitle: 'Liked Video' });
 };
 
 const saveClickedBtn = async (btn, user, video, session) => {

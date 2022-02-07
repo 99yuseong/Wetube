@@ -57,7 +57,7 @@ div.comment-input-container {
 ul.comment-list {
     li {
         @include flex(flex-start, center);
-        margin-bottom: 16px;
+        margin-bottom: 36px;
     }
 
     .avatar-img {
