@@ -64,6 +64,8 @@ export const socialOnlyPreventMiddleware = (req, res, next) => {
     return res.redirect('/');
 };
 
+const isHeroku = process.env.NODE_ENV === 'production';
+
 const s3 = new aws.S3({
     credentials: {
         accessKeyId: process.env.AWS_ID,
@@ -71,10 +73,11 @@ const s3 = new aws.S3({
     },
 });
 
-const multerUploader = multerS3({
+const s3Uploader = multerS3({
     s3: s3,
     bucket: 'project-wetube',
     acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     key: (req, file, cb) => {
         if (file.fieldname === 'video') {
             cb(null, `videos/${file.originalname} - ${Date.now()}`);
@@ -88,12 +91,33 @@ const multerUploader = multerS3({
     },
 });
 
+const avatarStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/avatars');
+    },
+    filename: (req, file, cb) => {
+        cb(null, '/' + file.originalname + '-' + Date.now());
+    },
+});
+
+const videoStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (req, file, cb) => {
+        if (file.fieldname === 'video') {
+            cb(null, `/videos/${file.originalname} - ${Date.now()}`);
+        }
+        if (file.fieldname === 'thumbnail') {
+            cb(null, `/thumbnails/${file.originalname} - ${Date.now()}`);
+        }
+    },
+});
+
 export const avatarUpload = multer({
-    dest: 'uploads/',
-    storage: multerUploader,
+    storage: isHeroku ? s3Uploader : avatarStorage,
 });
 
 export const videoUpload = multer({
-    dest: 'uploads/',
-    storage: multerUploader,
+    storage: isHeroku ? s3Uploader : videoStorage,
 });
