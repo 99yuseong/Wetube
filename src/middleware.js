@@ -93,10 +93,10 @@ const s3Uploader = multerS3({
 
 const avatarStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/avatars');
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, '/' + file.originalname + '-' + Date.now());
+        cb(null, '/avatars' + file.originalname + '-' + Date.now());
     },
 });
 
