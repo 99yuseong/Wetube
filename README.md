@@ -1,28 +1,31 @@
-URL route
+# 유튜브 클론 코딩
 
-root
+![project-wetube 배포 캡쳐본](https://user-images.githubusercontent.com/75793880/154802717-7b71749e-d4be-4782-9072-ff2de103236f.PNG)
 
-/ => home (video)
-/join => join (channel)
-/login => login (channel)
-/search => search (video)
+> 배포 링크
+https://project-wetube.herokuapp.com
+(2022.02.08. - 2023.01.31.)
 
-watch
+> 기본적인 유튜브 사이트 기능 구현
+- 로그인/회원가입
+- 소셜로그인(깃허브, 네이버 연동)
+- 영상 시청/업로드/수정/삭제/검색
+- 영상 녹화/다운로드
+- subscription/liked/saved 기능
+- 댓글 업로드/삭제
 
-/watch/:id => watch (video)
-/watch/:id/edit => edit (video)
-/watch/:id/delete => delete (video)
+> package
+- nodeJS
+- Express
+- Babel
+- Pug
+- Webpack
+- SCSS
+- MongoDB
+- Mongoose
+- Multer
 
-channel
-
-/channel/:id => channel (channel)
-/channel/:id/edit => edit (channel)
-/channel/:id/delete => delete (channel)
-/channel/:id/logout => logout (channel)
-/channel/:id/upload => upload (video)
-
-feed
-
-/feed/explore => explore (video)
-/feed/subscriptions => subscriptions (channel)
-/feed/library => library (video)
+> Deployment
+- Heroku
+- S3 Upload
+- Mongo Atlas
